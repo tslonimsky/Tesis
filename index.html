@@ -518,39 +518,28 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 ════════════════════════════════════════ */
 #s10{background:var(--bk)}
 #s10 h2{color:var(--w)}
-#s10 .body{display:grid;grid-template-columns:1fr 2fr;gap:var(--gap);flex:1;min-height:0}
-#s10 .ns{display:flex;flex-direction:column;gap:10px}
-#s10 .nc{border-radius:var(--r);padding:16px 20px;cursor:pointer;
-  transition:transform .28s;display:flex;flex-direction:column;gap:3px}
-#s10 .nc:hover{transform:scale(1.04)}
-#s10 .n1{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
-#s10 .n2{background:rgba(245,197,24,.1);border:1px solid rgba(245,197,24,.22)}
-#s10 .n3{background:var(--sage)}
-#s10 .nl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3.5px}
+#s10 .ns-full{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;min-height:0}
+#s10 .nc{border-radius:8px;padding:36px 32px;cursor:pointer;
+  transition:transform .28s;display:flex;flex-direction:column;gap:10px;justify-content:center}
+#s10 .nc:hover{transform:scale(1.03)}
+#s10 .n1{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+#s10 .n2{background:rgba(212,165,116,.1);border:1px solid rgba(212,165,116,.22)}
+#s10 .n3{background:var(--sage);border:none}
+#s10 .nl{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px}
 #s10 .n1 .nl,#s10 .n2 .nl{color:rgba(255,255,255,.3)}
-#s10 .n3 .nl{color:rgba(255,255,255,.5)}
-#s10 .nv{font-family:'Bebas Neue',sans-serif;font-size:50px;line-height:1}
+#s10 .n3 .nl{color:rgba(255,255,255,.6)}
+#s10 .nv{font-family:'Bebas Neue',sans-serif;font-size:110px;line-height:.85;letter-spacing:-2px}
 #s10 .n1 .nv,#s10 .n2 .nv{color:var(--w)}
 #s10 .n3 .nv{color:var(--w)}
-#s10 .nd{font-size:13px}
-#s10 .n1 .nd,#s10 .n2 .nd{color:rgba(255,255,255,.35)}
-#s10 .n3 .nd{color:rgba(255,255,255,.6)}
-#s10 .chart{display:flex;flex-direction:column;gap:12px}
-#s10 .ct{font-family:'Bebas Neue',sans-serif;font-size:15px;
-  color:rgba(255,255,255,.3);letter-spacing:3px}
-#s10 .bars{display:flex;align-items:flex-end;gap:16px;flex:1;min-height:0}
-#s10 .bc2{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
-#s10 .bv{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--sage)}
-#s10 .bt{width:100%;background:rgba(255,255,255,.07);border-radius:3px 3px 0 0;overflow:hidden}
-#s10 .bf{width:100%;background:var(--sage);border-radius:3px 3px 0 0;
-  transform-origin:bottom;transform:scaleY(0)}
-#s10 .bl{font-size:14px;color:rgba(255,255,255,.42);text-align:center;line-height:1.35}
-#s10 .cf{font-size:14px;color:rgba(255,255,255,.28);font-style:italic}
+#s10 .nd{font-size:18px;color:rgba(255,255,255,.65);line-height:1.4;margin-top:4px}
+#s10 .n3 .nd{color:rgba(255,255,255,.8)}
+#s10 .ns-sub{font-size:15px;color:rgba(255,255,255,.35)}
+#s10 .n3 .ns-sub{color:rgba(255,255,255,.6)}
+#s10 .ns-foot{font-size:14px;color:rgba(255,255,255,.25);font-style:italic;margin-top:4px}
 #s10.active .lbl  {animation:fd .4s ease .1s both}
 #s10.active h2    {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
-#s10.active .nc   {animation:sc .4s ease calc(.26s + var(--i)*.12s) both}
-#s10.active .chart{animation:up .48s ease .44s both}
-#s10.active .bf   {animation:barU .88s cubic-bezier(.34,1.56,.64,1) calc(.6s + var(--d)) both}
+#s10.active .nc   {animation:sc .48s ease calc(.28s + var(--i)*.14s) both}
+#s10.active .ns-foot{animation:fd .5s ease .7s both}
 
 /* ════════════════════════════════════════
    S11  MVP — split
@@ -1155,23 +1144,27 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <div class="sl" id="s10">
   <div class="lbl lw">08 — DEMANDA</div>
   <h2>ESTIMACIÓN DE DEMANDA</h2>
-  <div class="body">
-    <div class="ns">
-      <div class="nc n1" style="--i:0"><div class="nl">TAM</div><div class="nv">4.800</div><div class="nd">PyMEs textiles · USD 2.6M/año</div></div>
-      <div class="nc n2" style="--i:1"><div class="nl">SAM</div><div class="nv">1.200</div><div class="nd">Con tintorería externa · USD 648K/año</div></div>
-      <div class="nc n3" style="--i:2"><div class="nl">SOM AÑO 1</div><div class="nv">150</div><div class="nd">CABA/GBA · acceso directo</div></div>
+  <div class="ns-full">
+    <div class="nc n1" style="--i:0">
+      <div class="nl">TAM</div>
+      <div class="nv">4.800</div>
+      <div class="nd">PyMEs textiles en Argentina</div>
+      <div class="ns-sub">USD 2.6M/año potencial</div>
     </div>
-    <div class="chart">
-      <div class="ct">PROYECCIÓN MRR — AÑO 1 (USD)</div>
-      <div class="bars">
-        <div class="bc2"><div class="bv">$135</div><div class="bt" style="height:220px"><div class="bf" style="height:15px;--d:.1s"></div></div><div class="bl">Q1 · 3 clientes</div></div>
-        <div class="bc2"><div class="bv">$495</div><div class="bt" style="height:220px"><div class="bf" style="height:51px;--d:.22s"></div></div><div class="bl">Q2 · 11 clientes</div></div>
-        <div class="bc2"><div class="bv">$1.170</div><div class="bt" style="height:220px"><div class="bf" style="height:120px;--d:.34s"></div></div><div class="bl">Q3 · 26 clientes</div></div>
-        <div class="bc2"><div class="bv">$2.295</div><div class="bt" style="height:220px"><div class="bf" style="height:220px;--d:.46s"></div></div><div class="bl">Q4 · 51 clientes</div></div>
-      </div>
-      <div class="cf">ARR Año 1 proyectado: ~USD 18.000 · escenario conservador · churn 5% mensual</div>
+    <div class="nc n2" style="--i:1">
+      <div class="nl">SAM</div>
+      <div class="nv">1.200</div>
+      <div class="nd">Con tintorería externa</div>
+      <div class="ns-sub">USD 648K/año</div>
+    </div>
+    <div class="nc n3" style="--i:2">
+      <div class="nl">SOM AÑO 1</div>
+      <div class="nv">150</div>
+      <div class="nd">CABA/GBA · acceso directo</div>
+      <div class="ns-sub">USD 180K/año a USD 100/mes</div>
     </div>
   </div>
+  <div class="ns-foot">ARR proyectado Año 1: ~USD 18.000 · escenario conservador · churn 5% mensual</div>
 </div>
 
 <!-- S11 MVP -->
