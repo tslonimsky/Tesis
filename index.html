@@ -261,88 +261,63 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 #s4.active .col:nth-child(3){animation:sc .5s ease .58s both}
 
 /* ════════════════════════════════════════
-   S5  VALIDACIÓN — v5 visual
+   S5  VALIDACIÓN — v6 simple robust
 ════════════════════════════════════════ */
-#s5{background:var(--bk);display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr;
-  gap:0;padding:0 !important}
+#s5{background:var(--bk)}
 
-/* Left panel */
-#s5 .s5left{padding:40px 50px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  border-right:1px solid rgba(255,255,255,.07);min-height:0}
+#s5 .s5-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+#s5 .s5-top h2{color:var(--w);font-size:60px;line-height:.9}
+#s5 .s5-nums{display:flex;gap:32px;align-items:flex-end}
+#s5 .s5-num{display:flex;flex-direction:column;align-items:flex-end}
+#s5 .s5-n{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:.85;letter-spacing:-2px}
+#s5 .s5-n.amber{color:var(--y)}
+#s5 .s5-n.green{color:var(--sage)}
+#s5 .s5-nl{font-size:12px;color:rgba(255,255,255,.35);text-align:right;max-width:110px;line-height:1.3;margin-top:4px}
+#s5 .s5-div{width:1px;height:60px;background:rgba(255,255,255,.1)}
 
-#s5 .s5left .lbl{color:rgba(255,255,255,.3)}
-#s5 .s5left h2{color:var(--w);font-size:58px;line-height:.88;margin-top:10px}
+#s5 .s5-sources{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:16px}
+#s5 .ssrc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:6px;padding:10px 10px;display:flex;flex-direction:column;gap:4px;
+  transition:background .2s}
+#s5 .ssrc:hover{background:rgba(255,255,255,.09)}
+#s5 .ssrc.hl{border-color:rgba(212,165,116,.3);background:rgba(212,165,116,.07)}
+#s5 .ssrc.ex{border-color:rgba(122,158,126,.25);background:rgba(122,158,126,.06)}
+#s5 .ssrc .si{font-size:18px;line-height:1}
+#s5 .ssrc .sn{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.8px;
+  color:var(--w);line-height:1;margin-top:2px}
+#s5 .ssrc.hl .sn{color:var(--y)}
+#s5 .ssrc.ex .sn{color:#a8d4ac}
+#s5 .ssrc .sr{font-size:11px;color:rgba(255,255,255,.28);line-height:1.25}
 
-/* Stats 2x2 grid */
-#s5 .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);
-  border-radius:8px;overflow:hidden;margin-top:auto}
-#s5 .stat{padding:16px 18px;background:var(--bk);display:flex;flex-direction:column;gap:4px}
-#s5 .stat-n{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:.85;letter-spacing:-1px}
-#s5 .stat-n.amber{color:var(--y)}
-#s5 .stat-n.green{color:var(--sage)}
-#s5 .stat-l{font-size:13px;color:rgba(255,255,255,.4);line-height:1.3}
+#s5 .s5-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#s5 .sqcard{border-left:3px solid var(--y);background:rgba(255,255,255,.04);
+  border-radius:0 6px 6px 0;padding:16px 18px;
+  display:flex;flex-direction:column;justify-content:space-between}
+#s5 .sqcard.q2{border-left-color:var(--sage)}
+#s5 .sqcard.q3{border-left-color:var(--lavender)}
+#s5 .sqcard .qt{font-size:15px;color:rgba(255,255,255,.78);line-height:1.58;font-style:italic}
+#s5 .sqcard .qb{height:2px;width:22px;background:var(--y);margin:12px 0 6px}
+#s5 .sqcard.q2 .qb{background:var(--sage)}
+#s5 .sqcard.q3 .qb{background:var(--lavender)}
+#s5 .sqcard .qn{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--y)}
+#s5 .sqcard.q2 .qn{color:#a8d4ac}
+#s5 .sqcard.q3 .qn{color:#c4c0e0}
+#s5 .sqcard .qr{font-size:11px;color:rgba(255,255,255,.26);margin-top:2px}
 
-/* Right panel */
-#s5 .s5right{display:grid;grid-template-rows:1fr 1fr;gap:0;min-height:0;overflow:hidden}
+#s5 .s5-foot{display:flex;align-items:center;gap:8px;margin-top:14px;
+  padding:9px 14px;background:rgba(255,255,255,.04);border-radius:6px;
+  border:1px solid rgba(255,255,255,.06)}
+#s5 .s5-foot-dot{width:7px;height:7px;border-radius:50%;background:var(--sage);
+  animation:pls 2s infinite;flex-shrink:0}
+#s5 .s5-foot p{font-size:13px;color:rgba(255,255,255,.38);font-style:italic}
+#s5 .s5-foot p strong{color:rgba(255,255,255,.68);font-style:normal}
 
-/* Sources mosaic - top half */
-#s5 .sources{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);min-height:0}
-#s5 .src{background:rgba(255,255,255,.03);padding:14px 14px;
-  display:flex;flex-direction:column;gap:4px;
-  transition:background .2s;cursor:default;overflow:hidden;min-height:0}
-#s5 .src:hover{background:rgba(255,255,255,.08)}
-#s5 .src .si{font-size:20px;line-height:1}
-#s5 .src .sn{font-family:'Bebas Neue',sans-serif;font-size:13px;
-  letter-spacing:1px;color:var(--w);line-height:1;margin-top:2px}
-#s5 .src .sr{font-size:11px;color:rgba(255,255,255,.3);line-height:1.25}
-#s5 .src.hl{background:rgba(212,165,116,.07);border-bottom:2px solid var(--y)}
-#s5 .src.hl .sn{color:var(--y)}
-#s5 .src.ex{background:rgba(122,158,126,.06);border-bottom:2px solid var(--sage)}
-#s5 .src.ex .sn{color:#a8d4ac}
-#s5 .src.se{background:rgba(168,164,200,.05);border-bottom:2px solid var(--lavender)}
-#s5 .src.se .sn{color:#c4c0e0}
-
-/* Quotes - bottom half */
-#s5 .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-  background:rgba(255,255,255,.07);min-height:0;overflow:hidden}
-#s5 .qcard{background:rgba(255,255,255,.03);padding:16px 16px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  transition:background .2s;cursor:default;overflow:hidden;min-height:0}
-#s5 .qcard:hover{background:rgba(255,255,255,.07)}
-#s5 .qcard .qtxt{font-size:15px;color:rgba(255,255,255,.75);
-  line-height:1.6;font-style:italic}
-#s5 .qcard .qbar{height:2px;margin:12px 0 8px;width:28px}
-#s5 .qcard.q1 .qbar{background:var(--y)}
-#s5 .qcard.q2 .qbar{background:var(--sage)}
-#s5 .qcard.q3 .qbar{background:var(--lavender)}
-#s5 .qcard .qname{font-family:'Bebas Neue',sans-serif;font-size:12px;
-  letter-spacing:2px}
-#s5 .qcard.q1 .qname{color:var(--y)}
-#s5 .qcard.q2 .qname{color:#a8d4ac}
-#s5 .qcard.q3 .qname{color:#c4c0e0}
-#s5 .qcard .qrole{font-size:11px;color:rgba(255,255,255,.25);margin-top:2px}
-
-#s5.active .s5left  {animation:fd .5s ease .08s both}
-#s5.active .stat:nth-child(1){animation:sc .38s ease .2s both}
-#s5.active .stat:nth-child(2){animation:sc .38s ease .28s both}
-#s5.active .stat:nth-child(3){animation:sc .38s ease .36s both}
-#s5.active .stat:nth-child(4){animation:sc .38s ease .44s both}
-#s5.active .src:nth-child(1){animation:fd .3s ease .26s both}
-#s5.active .src:nth-child(2){animation:fd .3s ease .32s both}
-#s5.active .src:nth-child(3){animation:fd .3s ease .38s both}
-#s5.active .src:nth-child(4){animation:fd .3s ease .44s both}
-#s5.active .src:nth-child(5){animation:fd .3s ease .50s both}
-#s5.active .src:nth-child(6){animation:fd .3s ease .56s both}
-#s5.active .src:nth-child(7){animation:fd .3s ease .62s both}
-#s5.active .src:nth-child(8){animation:fd .3s ease .68s both}
-#s5.active .qcard:nth-child(1){animation:up .38s ease .5s both}
-#s5.active .qcard:nth-child(2){animation:up .38s ease .58s both}
-#s5.active .qcard:nth-child(3){animation:up .38s ease .66s both}
+#s5.active .s5-top    {animation:dn .5s ease .08s both}
+#s5.active .s5-sources{animation:up .5s ease .2s both}
+#s5.active .sqcard:nth-child(1){animation:sc .4s ease .35s both}
+#s5.active .sqcard:nth-child(2){animation:sc .4s ease .44s both}
+#s5.active .sqcard:nth-child(3){animation:sc .4s ease .53s both}
+#s5.active .s5-foot   {animation:fd .5s ease .6s both}
 
 /* ════════════════════════════════════════
    S6  BUYER PERSONAS
@@ -846,101 +821,102 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <!-- S5 VALIDACIÓN -->
 <div class="sl" id="s5">
 
-  <div class="s5left">
+  <div class="s5-top">
     <div>
-      <div class="lbl lw">03 — VALIDACIÓN</div>
-      <h2>LO QUE<br>NOS DIJO<br>EL MERCADO</h2>
+      <div class="lbl lw" style="margin-bottom:8px">03 — VALIDACIÓN</div>
+      <h2>LO QUE NOS<br>DIJO EL MERCADO</h2>
     </div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-n amber">12</div>
-        <div class="stat-l">empresas y referentes del sector contactados</div>
+    <div class="s5-nums">
+      <div class="s5-num">
+        <div class="s5-n amber">12</div>
+        <div class="s5-nl">empresas y referentes contactados</div>
       </div>
-      <div class="stat">
-        <div class="stat-n green">100%</div>
-        <div class="stat-l">confirmó el problema</div>
+      <div class="s5-div"></div>
+      <div class="s5-num">
+        <div class="s5-n green">100%</div>
+        <div class="s5-nl">sin sistema confirmó el problema</div>
       </div>
-      <div class="stat">
-        <div class="stat-n amber">4</div>
-        <div class="stat-l">visitas presenciales a planta</div>
-      </div>
-      <div class="stat">
-        <div class="stat-n green">2</div>
-        <div class="stat-l">expertas sectoriales en profundidad</div>
+      <div class="s5-div"></div>
+      <div class="s5-num">
+        <div class="s5-n amber">4</div>
+        <div class="s5-nl">visitas presenciales a planta</div>
       </div>
     </div>
   </div>
 
-  <div class="s5right">
-    <div class="sources">
-      <div class="src hl">
-        <div class="si">🏭</div>
-        <div class="sn">Muter Textil</div>
-        <div class="sr">4 visitas · dueño + depósito</div>
-      </div>
-      <div class="src ex">
-        <div class="si">👩‍💼</div>
-        <div class="sn">Mariela</div>
-        <div class="sr">Experta WMS · 20 años</div>
-      </div>
-      <div class="src ex">
-        <div class="si">👩‍🔬</div>
-        <div class="sn">Ing. de stock (SIGE)</div>
-        <div class="sr">Experto ERP · industria manufacturera</div>
-      </div>
-      <div class="src se">
-        <div class="si">🧵</div>
-        <div class="sn">Texcom</div>
-        <div class="sr">75 años · ERP propio</div>
-      </div>
-      <div class="src">
-        <div class="si">🏪</div>
-        <div class="sn">Dakuba</div>
-        <div class="sr">Distribuidor · Excel + sobreventa</div>
-      </div>
-      <div class="src">
-        <div class="si">🏗️</div>
-        <div class="sn">Griantex</div>
-        <div class="sr">Sistema propio · problema resuelto</div>
-      </div>
-      <div class="src">
-        <div class="si">🏢</div>
-        <div class="sn">Flandria Textil</div>
-        <div class="sr">280 empleados · SAP</div>
-      </div>
-      <div class="src">
-        <div class="si">📋</div>
-        <div class="sn">Macatex · Glam · 4 más</div>
-        <div class="sr">PyMEs textiles · Excel o memoria</div>
-      </div>
+  <div class="s5-sources">
+    <div class="ssrc hl">
+      <div class="si">🏭</div>
+      <div class="sn">Muter Textil</div>
+      <div class="sr">4 visitas · dueño + depósito</div>
     </div>
+    <div class="ssrc ex">
+      <div class="si">👩‍💼</div>
+      <div class="sn">Mariela</div>
+      <div class="sr">Experta WMS · 20 años</div>
+    </div>
+    <div class="ssrc ex">
+      <div class="si">👩‍🔬</div>
+      <div class="sn">Ing. SIGE</div>
+      <div class="sr">Experto ERP · manufactura</div>
+    </div>
+    <div class="ssrc">
+      <div class="si">🧵</div>
+      <div class="sn">Texcom</div>
+      <div class="sr">75 años · ERP propio</div>
+    </div>
+    <div class="ssrc">
+      <div class="si">🏪</div>
+      <div class="sn">Dakuba</div>
+      <div class="sr">Excel + sobreventa</div>
+    </div>
+    <div class="ssrc">
+      <div class="si">🏗️</div>
+      <div class="sn">Griantex</div>
+      <div class="sr">Sistema propio</div>
+    </div>
+    <div class="ssrc">
+      <div class="si">🏢</div>
+      <div class="sn">Flandria</div>
+      <div class="sr">280 emp. · SAP</div>
+    </div>
+    <div class="ssrc">
+      <div class="si">📋</div>
+      <div class="sn">Macatex + 4 más</div>
+      <div class="sr">PyMEs · Excel o memoria</div>
+    </div>
+  </div>
 
-    <div class="quotes">
-      <div class="qcard q1">
-        <div class="qtxt">La mayoría no tiene WMS. Hacerles un mini-WMS rústico, básico, visual — está bueno.</div>
-        <div>
-          <div class="qbar"></div>
-          <div class="qname">Mariela</div>
-          <div class="qrole">Experta WMS · 20 años en industria textil</div>
-        </div>
-      </div>
-      <div class="qcard q2">
-        <div class="qtxt">Si buscan la solución para empresas más chicas puede haber mucho mercado… todo termina en la libreta.</div>
-        <div>
-          <div class="qbar"></div>
-          <div class="qname">Texcom</div>
-          <div class="qrole">75 años en el sector textil</div>
-        </div>
-      </div>
-      <div class="qcard q3">
-        <div class="qtxt">Sería una solución a muchos problemas. Sobrevender mercadería que no tenemos es un error recurrente.</div>
-        <div>
-          <div class="qbar"></div>
-          <div class="qname">Dakuba</div>
-          <div class="qrole">Distribuidor textil</div>
-        </div>
+  <div class="s5-quotes">
+    <div class="sqcard q1">
+      <div class="qt">La mayoría no tiene WMS. Hacerles un mini-WMS rústico, básico, visual — está bueno.</div>
+      <div>
+        <div class="qb"></div>
+        <div class="qn">Mariela</div>
+        <div class="qr">Experta WMS · 20 años en industria textil</div>
       </div>
     </div>
+    <div class="sqcard q2">
+      <div class="qt">Si buscan la solución para empresas más chicas puede haber mucho mercado… todo termina en la libreta.</div>
+      <div>
+        <div class="qb"></div>
+        <div class="qn">Texcom</div>
+        <div class="qr">75 años en el sector textil</div>
+      </div>
+    </div>
+    <div class="sqcard q3">
+      <div class="qt">Sería una solución a muchos problemas. Sobrevender mercadería que no tenemos es un error recurrente.</div>
+      <div>
+        <div class="qb"></div>
+        <div class="qn">Dakuba</div>
+        <div class="qr">Distribuidor textil</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="s5-foot">
+    <div class="s5-foot-dot"></div>
+    <p><strong>Muter Textil</strong> va a probar el sistema · en conversación activa con <strong>Mariela</strong> — consultora con cartera de tejedurías CABA/GBA</p>
   </div>
 
 </div>
