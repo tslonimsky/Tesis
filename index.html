@@ -261,38 +261,88 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 #s4.active .col:nth-child(3){animation:sc .5s ease .58s both}
 
 /* ════════════════════════════════════════
-   S5  VALIDACIÓN
+   S5  VALIDACIÓN — v5 visual
 ════════════════════════════════════════ */
-#s5{background:var(--bk)}
-#s5 h2{color:var(--w)}
-#s5 .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0}
-#s5 .left{display:flex;flex-direction:column;gap:10px}
-#s5 .right{display:flex;flex-direction:column;gap:12px}
-#s5 .vi{display:flex;align-items:flex-start;gap:14px;
-  padding:14px 18px;border:1px solid rgba(255,255,255,.12);border-radius:var(--r);
-  cursor:pointer;transition:border-color .25s,transform .25s}
-#s5 .vi:hover{border-color:var(--y);transform:translateX(6px)}
-#s5 .vi .vd{width:9px;height:9px;border-radius:50%;background:var(--y);flex-shrink:0;margin-top:6px}
-#s5 .vi p{font-size:18px;color:rgba(255,255,255,.72);line-height:1.62}
-#s5 .stat{background:var(--blush);border-radius:var(--r);padding:18px 22px;
-  display:flex;align-items:center;gap:16px;margin-top:auto}
-#s5 .stat .sn{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--bk);line-height:1;flex-shrink:0}
-#s5 .stat p{font-size:19px;font-weight:600;color:var(--bk);line-height:1.4}
-#s5 .vq{border:1px solid rgba(255,255,255,.12);border-radius:var(--r);
-  padding:22px;border-left:4px solid var(--y);flex:1;
+#s5{background:var(--bk);display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr;
+  gap:0;padding:0 !important}
+
+/* Left panel */
+#s5 .s5left{padding:40px 50px;
   display:flex;flex-direction:column;justify-content:space-between;
-  cursor:pointer;transition:transform .3s}
-#s5 .vq:hover{transform:scale(1.02)}
-#s5 .vq blockquote{font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;font-style:italic}
-#s5 .vq cite{font-size:14px;color:var(--y);font-style:normal;font-weight:600;margin-top:10px;display:block}
-#s5.active .head           {animation:dn .52s ease .1s both}
-#s5.active .vi:nth-child(1){animation:up .38s ease .26s both}
-#s5.active .vi:nth-child(2){animation:up .38s ease .34s both}
-#s5.active .vi:nth-child(3){animation:up .38s ease .42s both}
-#s5.active .vi:nth-child(4){animation:up .38s ease .5s both}
-#s5.active .stat           {animation:sc .48s ease .6s both}
-#s5.active .vq:nth-child(1){animation:sc .46s ease .3s both}
-#s5.active .vq:nth-child(2){animation:sc .46s ease .46s both}
+  border-right:1px solid rgba(255,255,255,.07);min-height:0}
+
+#s5 .s5left .lbl{color:rgba(255,255,255,.3)}
+#s5 .s5left h2{color:var(--w);font-size:58px;line-height:.88;margin-top:10px}
+
+/* Stats 2x2 grid */
+#s5 .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;overflow:hidden;margin-top:auto}
+#s5 .stat{padding:16px 18px;background:var(--bk);display:flex;flex-direction:column;gap:4px}
+#s5 .stat-n{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:.85;letter-spacing:-1px}
+#s5 .stat-n.amber{color:var(--y)}
+#s5 .stat-n.green{color:var(--sage)}
+#s5 .stat-l{font-size:13px;color:rgba(255,255,255,.4);line-height:1.3}
+
+/* Right panel */
+#s5 .s5right{display:grid;grid-template-rows:1fr 1fr;gap:0;min-height:0;overflow:hidden}
+
+/* Sources mosaic - top half */
+#s5 .sources{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);min-height:0}
+#s5 .src{background:rgba(255,255,255,.03);padding:14px 14px;
+  display:flex;flex-direction:column;gap:4px;
+  transition:background .2s;cursor:default;overflow:hidden;min-height:0}
+#s5 .src:hover{background:rgba(255,255,255,.08)}
+#s5 .src .si{font-size:20px;line-height:1}
+#s5 .src .sn{font-family:'Bebas Neue',sans-serif;font-size:13px;
+  letter-spacing:1px;color:var(--w);line-height:1;margin-top:2px}
+#s5 .src .sr{font-size:11px;color:rgba(255,255,255,.3);line-height:1.25}
+#s5 .src.hl{background:rgba(212,165,116,.07);border-bottom:2px solid var(--y)}
+#s5 .src.hl .sn{color:var(--y)}
+#s5 .src.ex{background:rgba(122,158,126,.06);border-bottom:2px solid var(--sage)}
+#s5 .src.ex .sn{color:#a8d4ac}
+#s5 .src.se{background:rgba(168,164,200,.05);border-bottom:2px solid var(--lavender)}
+#s5 .src.se .sn{color:#c4c0e0}
+
+/* Quotes - bottom half */
+#s5 .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(255,255,255,.07);min-height:0;overflow:hidden}
+#s5 .qcard{background:rgba(255,255,255,.03);padding:16px 16px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  transition:background .2s;cursor:default;overflow:hidden;min-height:0}
+#s5 .qcard:hover{background:rgba(255,255,255,.07)}
+#s5 .qcard .qtxt{font-size:15px;color:rgba(255,255,255,.75);
+  line-height:1.6;font-style:italic}
+#s5 .qcard .qbar{height:2px;margin:12px 0 8px;width:28px}
+#s5 .qcard.q1 .qbar{background:var(--y)}
+#s5 .qcard.q2 .qbar{background:var(--sage)}
+#s5 .qcard.q3 .qbar{background:var(--lavender)}
+#s5 .qcard .qname{font-family:'Bebas Neue',sans-serif;font-size:12px;
+  letter-spacing:2px}
+#s5 .qcard.q1 .qname{color:var(--y)}
+#s5 .qcard.q2 .qname{color:#a8d4ac}
+#s5 .qcard.q3 .qname{color:#c4c0e0}
+#s5 .qcard .qrole{font-size:11px;color:rgba(255,255,255,.25);margin-top:2px}
+
+#s5.active .s5left  {animation:fd .5s ease .08s both}
+#s5.active .stat:nth-child(1){animation:sc .38s ease .2s both}
+#s5.active .stat:nth-child(2){animation:sc .38s ease .28s both}
+#s5.active .stat:nth-child(3){animation:sc .38s ease .36s both}
+#s5.active .stat:nth-child(4){animation:sc .38s ease .44s both}
+#s5.active .src:nth-child(1){animation:fd .3s ease .26s both}
+#s5.active .src:nth-child(2){animation:fd .3s ease .32s both}
+#s5.active .src:nth-child(3){animation:fd .3s ease .38s both}
+#s5.active .src:nth-child(4){animation:fd .3s ease .44s both}
+#s5.active .src:nth-child(5){animation:fd .3s ease .50s both}
+#s5.active .src:nth-child(6){animation:fd .3s ease .56s both}
+#s5.active .src:nth-child(7){animation:fd .3s ease .62s both}
+#s5.active .src:nth-child(8){animation:fd .3s ease .68s both}
+#s5.active .qcard:nth-child(1){animation:up .38s ease .5s both}
+#s5.active .qcard:nth-child(2){animation:up .38s ease .58s both}
+#s5.active .qcard:nth-child(3){animation:up .38s ease .66s both}
 
 /* ════════════════════════════════════════
    S6  BUYER PERSONAS
@@ -324,53 +374,83 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 #s6.active .foot{animation:fd .5s ease .7s both}
 
 /* ════════════════════════════════════════
-   S7  MERCADO (amarillo)
+   S7  MERCADO — v2 expanded
 ════════════════════════════════════════ */
-#s7{background:var(--linen)}
-#s7 h2{color:var(--bk)}
-#s7 .body{display:grid;grid-template-columns:1fr 2fr;gap:var(--gap);flex:1;min-height:0}
-#s7 .tams{display:flex;flex-direction:column;gap:11px}
-#s7 .tr{border-radius:var(--r);padding:16px 20px;cursor:pointer;
+#s7{background:var(--linen);overflow:hidden}
+#s7 h2{color:var(--bk);font-size:58px}
+#s7 .s7body{display:grid;grid-template-columns:1fr 1.6fr;gap:var(--gap);flex:1;min-height:0;overflow:hidden}
+#s7 .s7left{display:flex;flex-direction:column;gap:10px}
+
+/* TAM/SAM/SOM */
+#s7 .tams{display:flex;flex-direction:column;gap:8px}
+#s7 .tr{border-radius:var(--r);padding:13px 18px;cursor:pointer;
   transition:transform .26s;display:flex;align-items:center;gap:14px}
 #s7 .tr:hover{transform:translateX(7px) scale(1.02)}
 #s7 .t1{background:var(--bk)}
-#s7 .t2{background:rgba(122,158,126,.18)}
-#s7 .t3{background:rgba(168,164,200,.15)}
+#s7 .t2{background:rgba(122,158,126,.18);border:1px solid rgba(122,158,126,.25)}
+#s7 .t3{background:rgba(168,164,200,.15);border:1px solid rgba(168,164,200,.22)}
 #s7 .tl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;min-width:36px}
 #s7 .t1 .tl{color:var(--y)}
-#s7 .t2 .tl,#s7 .t3 .tl{color:rgba(44,36,22,.5)}
-#s7 .tv{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1}
+#s7 .t2 .tl{color:var(--sage)}
+#s7 .t3 .tl{color:var(--lavender)}
+#s7 .tv{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1}
 #s7 .t1 .tv{color:var(--w)}
 #s7 .t2 .tv,#s7 .t3 .tv{color:var(--bk)}
-#s7 .td{font-size:15px;line-height:1.4}
+#s7 .td{font-size:14px;line-height:1.35}
 #s7 .t1 .td{color:rgba(255,255,255,.4)}
-#s7 .t2 .td,#s7 .t3 .td{color:rgba(44,36,22,.55)}
+#s7 .t2 .td{color:rgba(44,36,22,.55)}
+#s7 .t3 .td{color:rgba(44,36,22,.5)}
+
+/* Insight box */
+#s7 .insight{background:var(--bk);border-radius:var(--r);padding:11px 15px;
+  border-left:3px solid var(--y);margin-top:auto}
+#s7 .insight p{font-size:13px;color:rgba(255,255,255,.62);line-height:1.5;font-style:italic}
+#s7 .insight cite{font-size:11px;color:var(--y);font-style:normal;
+  letter-spacing:1.5px;font-family:'Bebas Neue',sans-serif;margin-top:6px;display:block}
+
+/* Right: competitor table */
+#s7 .s7right{display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
 #s7 .table{display:flex;flex-direction:column;border-radius:var(--r);
-  overflow:hidden;border:1.5px solid rgba(0,0,0,.15)}
-#s7 .thead{display:grid;grid-template-columns:1.3fr 1.1fr 1.5fr;
-  background:var(--bk);padding:13px 18px}
-#s7 .thead span{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2.5px;color:var(--y)}
-#s7 .trow{display:grid;grid-template-columns:1.3fr 1.1fr 1.5fr;
-  padding:13px 18px;align-items:center;cursor:pointer;
-  border-top:1px solid rgba(0,0,0,.08);transition:background .2s}
-#s7 .trow:hover{background:rgba(0,0,0,.09)}
-#s7 .trow.star{background:var(--sage);border-top-color:transparent}
-#s7 .trow.star:hover{background:#6a8e6e}
-#s7 .trow span{font-size:16px;color:rgba(0,0,0,.75)}
-#s7 .trow.star span{color:var(--w);font-weight:700;font-family:'Bebas Neue',sans-serif;font-size:16px}
-#s7 .cc{color:#16a34a}#s7 .xx{color:#cc2222}#s7 .ww{color:#b85400}
+  overflow:hidden;border:1.5px solid rgba(44,36,22,.12);flex:1;min-height:0}
+#s7 .thead{display:grid;grid-template-columns:1.4fr .9fr 1fr 1.5fr;
+  background:var(--bk);padding:9px 14px;gap:8px}
+#s7 .thead span{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2.5px;color:var(--y)}
+#s7 .trow{display:grid;grid-template-columns:1.4fr .9fr 1fr 1.5fr;
+  padding:9px 14px;align-items:center;gap:8px;
+  border-top:1px solid rgba(44,36,22,.08);transition:background .2s;cursor:default}
+#s7 .trow:hover{background:rgba(44,36,22,.05)}
+#s7 .trow.star{background:rgba(122,158,126,.12);border-top-color:transparent;
+  border:1.5px solid rgba(122,158,126,.3);border-radius:4px;margin:4px 0}
+#s7 .trow.star:hover{background:rgba(122,158,126,.2)}
+#s7 .trow span{font-size:13px;color:rgba(44,36,22,.72)}
+#s7 .trow.star span{color:var(--bk);font-weight:600}
+#s7 .trow.star .sol{font-family:'Bebas Neue',sans-serif;font-size:16px;
+  letter-spacing:1px;color:var(--sage)}
+#s7 .cc{color:#3a8c3f}#s7 .xx{color:#b83232}#s7 .ww{color:#b85400}
+#s7 .motive{font-size:12px;color:rgba(44,36,22,.55);line-height:1.35}
+#s7 .trow.star .motive{color:rgba(44,36,22,.65);font-weight:500}
+
+/* Context strip */
+#s7 .ctx{display:flex;gap:8px;flex-shrink:0}
+#s7 .ctx-item{flex:1;background:rgba(44,36,22,.05);border:1px solid rgba(44,36,22,.1);
+  border-radius:var(--r);padding:8px 12px}
+#s7 .ctx-item .ci-lbl{font-family:'Bebas Neue',sans-serif;font-size:10px;
+  letter-spacing:2.5px;color:var(--muted);margin-bottom:3px}
+#s7 .ctx-item p{font-size:12px;color:rgba(44,36,22,.65);line-height:1.4}
+
 #s7.active .lbl  {animation:fd .4s ease .1s both}
 #s7.active h2    {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
 #s7.active .tr   {animation:up .42s ease calc(.3s + var(--i)*.1s) both}
-#s7.active .table{animation:sc .52s ease .44s both}
-
+#s7.active .insight{animation:fd .5s ease .55s both}
+#s7.active .table{animation:sc .52s ease .36s both}
+#s7.active .ctx  {animation:up .45s ease .58s both}
 
 /* ════════════════════════════════════════
-   S8  MODELO NEGOCIOS — v2
+   S8  MODELO NEGOCIOS — BMC
 ════════════════════════════════════════ */
 #s8{background:var(--bk)}
-#s8 h2{color:var(--w);font-size:52px}
-#s8 .bmc{display:grid;grid-template-columns:1fr 1.4fr 1fr 1fr;grid-template-rows:1fr 1fr;
+#s8 h2{color:var(--w);font-size:46px;line-height:1}
+#s8 .bmc{display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;grid-template-rows:1fr 1fr;
   gap:8px;flex:1;min-height:0}
 #s8 .bc{border-radius:6px;padding:14px 18px;
   display:flex;flex-direction:column;gap:5px;cursor:pointer;
@@ -389,19 +469,24 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 #s8 .bc.dk    .bc-lbl{color:var(--y)}
 #s8 .bc h4{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;line-height:1.1}
 #s8 .bc.blush h4{color:rgba(44,36,22,.75)}
-#s8 .bc.sage  h4, #s8 .bc.lav h4{color:var(--w)}
+#s8 .bc.sage  h4,#s8 .bc.lav h4{color:var(--w)}
 #s8 .bc.dk    h4{color:var(--w)}
 #s8 .bc ul{list-style:none;display:flex;flex-direction:column;gap:3px;margin-top:3px;flex:1;min-height:0;overflow:hidden}
 #s8 .bc li{font-size:14px;line-height:1.4;display:flex;gap:6px;align-items:flex-start}
 #s8 .bc li::before{content:'·';font-size:14px;flex-shrink:0;margin-top:1px}
 #s8 .bc.blush li{color:rgba(44,36,22,.65)}
 #s8 .bc.blush li::before{color:var(--yd)}
-#s8 .bc.sage  li, #s8 .bc.lav li{color:rgba(255,255,255,.65)}
-#s8 .bc.sage  li::before, #s8 .bc.lav li::before{color:var(--sage)}
+#s8 .bc.sage  li,#s8 .bc.lav li{color:rgba(255,255,255,.65)}
+#s8 .bc.sage  li::before,#s8 .bc.lav li::before{color:var(--sage)}
 #s8 .bc.dk    li{color:rgba(255,255,255,.55)}
 #s8 .bc.dk    li::before{color:var(--y)}
+#s8 .pv-strip{background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.25);
+  border-radius:6px;padding:12px 18px;margin-bottom:2px}
+#s8 .pv-strip p{font-size:15px;color:rgba(255,255,255,.75);line-height:1.55;font-style:italic}
+#s8 .pv-strip strong{color:var(--y);font-style:normal}
 #s8.active .lbl{animation:fd .4s ease .1s both}
 #s8.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s8.active .pv-strip{animation:fd .5s ease .22s both}
 #s8.active .bc:nth-child(1){animation:sc .4s ease .28s both}
 #s8.active .bc:nth-child(2){animation:sc .4s ease .35s both}
 #s8.active .bc:nth-child(3){animation:sc .4s ease .42s both}
@@ -415,7 +500,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 ════════════════════════════════════════ */
 #s9{background:var(--w)}
 #s9 h2{color:var(--bk)}
-#s9 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0}
+#s9 .plans{display:flex;justify-content:center;align-items:stretch;flex:1;min-height:0}
 #s9 .plan{border-radius:var(--r);padding:28px;
   display:flex;flex-direction:column;gap:12px;
   position:relative;cursor:pointer;
@@ -451,7 +536,6 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 #s9.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
 #s9.active .plan:nth-child(1){animation:sc .48s ease .30s both}
 #s9.active .plan:nth-child(2){animation:sc .48s ease .44s both}
-#s9.active .plan:nth-child(3){animation:sc .48s ease .58s both}
 #s9.active .foot{animation:fd .5s ease .72s both}
 
 /* ════════════════════════════════════════
@@ -739,7 +823,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <!-- S4 PROPUESTA -->
 <div class="sl" id="s4">
   <div class="lbl lm">02 — PROPUESTA DE VALOR</div>
-  <h2>El operario registra sin fricción.<br><em>El dueño sabe qué tiene,</em> cuánto vale y qué está reservado — <em>en tiempo real.</em></h2>
+  <h2>Texon es el sistema de <em>trazabilidad</em> que hace de puente entre la tintorería y el depósito para que el dueño sepa qué entra, qué sale, cuándo y cuánto vale, <em>en tiempo real.</em></h2>
   <div class="cols">
     <div class="col">
       <div class="icon">👷</div>
@@ -761,32 +845,104 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 
 <!-- S5 VALIDACIÓN -->
 <div class="sl" id="s5">
-  <div class="head">
-    <div class="lbl lw" style="margin-bottom:6px">03 — VALIDACIÓN</div>
-    <h2>LO QUE NOS DIJO EL MERCADO</h2>
-  </div>
-  <div class="grid">
-    <div class="left">
-      <div class="vi"><div class="vd"></div><p>4+ visitas a <strong>Muter Textil</strong> — observación directa en planta</p></div>
-      <div class="vi"><div class="vd"></div><p><strong>Mariela</strong> — experta en WMS, 20 años en la industria textil argentina</p></div>
-      <div class="vi"><div class="vd"></div><p><strong>Texcom</strong> — empresa textil con 75 años en el sector</p></div>
-      <div class="vi"><div class="vd"></div><p>Encargado de depósito de Muter — pain points operativos reales</p></div>
+
+  <div class="s5left">
+    <div>
+      <div class="lbl lw">03 — VALIDACIÓN</div>
+      <h2>LO QUE<br>NOS DIJO<br>EL MERCADO</h2>
+    </div>
+    <div class="stats">
       <div class="stat">
-        <div class="sn">100%</div>
-        <p>de los entrevistados confirmó el problema. Sin excepciones.</p>
+        <div class="stat-n amber">12</div>
+        <div class="stat-l">empresas y referentes del sector contactados</div>
       </div>
-    </div>
-    <div class="right">
-      <div class="vq">
-        <blockquote>"La mayoría de las PyMEs no tienen WMS. Solo tienen sistema administrativo. Hacerles un mini-WMS rústico, básico, visual — está bueno."</blockquote>
-        <cite>Mariela · Experta WMS, 20 años en industria textil</cite>
+      <div class="stat">
+        <div class="stat-n green">100%</div>
+        <div class="stat-l">confirmó el problema</div>
       </div>
-      <div class="vq">
-        <blockquote>"Si buscan la solución para empresas más chicas puede haber mucho mercado… porque si no, todo termina en la libreta."</blockquote>
-        <cite>Texcom · 75 años en el sector textil argentino</cite>
+      <div class="stat">
+        <div class="stat-n amber">4</div>
+        <div class="stat-l">visitas presenciales a planta</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n green">2</div>
+        <div class="stat-l">expertas sectoriales en profundidad</div>
       </div>
     </div>
   </div>
+
+  <div class="s5right">
+    <div class="sources">
+      <div class="src hl">
+        <div class="si">🏭</div>
+        <div class="sn">Muter Textil</div>
+        <div class="sr">4 visitas · dueño + depósito</div>
+      </div>
+      <div class="src ex">
+        <div class="si">👩‍💼</div>
+        <div class="sn">Mariela</div>
+        <div class="sr">Experta WMS · 20 años</div>
+      </div>
+      <div class="src ex">
+        <div class="si">👩‍🔬</div>
+        <div class="sn">Ing. de stock (SIGE)</div>
+        <div class="sr">Experto ERP · industria manufacturera</div>
+      </div>
+      <div class="src se">
+        <div class="si">🧵</div>
+        <div class="sn">Texcom</div>
+        <div class="sr">75 años · ERP propio</div>
+      </div>
+      <div class="src">
+        <div class="si">🏪</div>
+        <div class="sn">Dakuba</div>
+        <div class="sr">Distribuidor · Excel + sobreventa</div>
+      </div>
+      <div class="src">
+        <div class="si">🏗️</div>
+        <div class="sn">Griantex</div>
+        <div class="sr">Sistema propio · problema resuelto</div>
+      </div>
+      <div class="src">
+        <div class="si">🏢</div>
+        <div class="sn">Flandria Textil</div>
+        <div class="sr">280 empleados · SAP</div>
+      </div>
+      <div class="src">
+        <div class="si">📋</div>
+        <div class="sn">Macatex · Glam · 4 más</div>
+        <div class="sr">PyMEs textiles · Excel o memoria</div>
+      </div>
+    </div>
+
+    <div class="quotes">
+      <div class="qcard q1">
+        <div class="qtxt">La mayoría no tiene WMS. Hacerles un mini-WMS rústico, básico, visual — está bueno.</div>
+        <div>
+          <div class="qbar"></div>
+          <div class="qname">Mariela</div>
+          <div class="qrole">Experta WMS · 20 años en industria textil</div>
+        </div>
+      </div>
+      <div class="qcard q2">
+        <div class="qtxt">Si buscan la solución para empresas más chicas puede haber mucho mercado… todo termina en la libreta.</div>
+        <div>
+          <div class="qbar"></div>
+          <div class="qname">Texcom</div>
+          <div class="qrole">75 años en el sector textil</div>
+        </div>
+      </div>
+      <div class="qcard q3">
+        <div class="qtxt">Sería una solución a muchos problemas. Sobrevender mercadería que no tenemos es un error recurrente.</div>
+        <div>
+          <div class="qbar"></div>
+          <div class="qname">Dakuba</div>
+          <div class="qrole">Distribuidor textil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- S6 BUYER PERSONAS -->
@@ -820,20 +976,82 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <div class="sl" id="s7">
   <div class="lbl lm">05 — MERCADO</div>
   <h2>MERCADO Y COMPETIDORES</h2>
-  <div class="body">
-    <div class="tams">
-      <div class="tr t1" style="--i:0"><span class="tl">TAM</span><div><div class="tv">4.800</div><div class="td">PyMEs textiles en Argentina · USD 2.6M/año</div></div></div>
-      <div class="tr t2" style="--i:1"><span class="tl">SAM</span><div><div class="tv">1.200</div><div class="td">Con tintorería externa · USD 648K/año</div></div></div>
-      <div class="tr t3" style="--i:2"><span class="tl">SOM</span><div><div class="tv">150</div><div class="td">CABA/GBA · Año 1 · USD 36–81K/año</div></div></div>
+  <div class="s7body">
+
+    <div class="s7left">
+      <div class="tams">
+        <div class="tr t1" style="--i:0">
+          <span class="tl">TAM</span>
+          <div><div class="tv">4.800</div><div class="td">PyMEs textiles en Argentina · USD 2.6M/año potencial</div></div>
+        </div>
+        <div class="tr t2" style="--i:1">
+          <span class="tl">SAM</span>
+          <div><div class="tv">1.200</div><div class="td">Con tintorería externa · USD 648K/año</div></div>
+        </div>
+        <div class="tr t3" style="--i:2">
+          <span class="tl">SOM</span>
+          <div><div class="tv">150</div><div class="td">CABA/GBA · Año 1 · USD 180K/año a USD 100/mes</div></div>
+        </div>
+      </div>
+
+      <div class="insight">
+        <p>La mayoría no tiene WMS. Solo tienen sistema administrativo. El hueco entre Excel y un ERP es donde vivimos nosotros.</p>
+        <cite>Mariela · Experta WMS · 20 años en industria textil</cite>
+      </div>
     </div>
-    <div class="table">
-      <div class="thead"><span>Solución</span><span>Precio</span><span>Para PyME textil</span></div>
-      <div class="trow"><span>SAP / SAP B1</span><span>USD 50.000+</span><span><span class="xx">✗</span> Demasiado caro y complejo</span></div>
-      <div class="trow"><span>Odoo</span><span>Gratis + impl. cara</span><span><span class="xx">✗</span> Genérico, curva alta</span></div>
-      <div class="trow"><span>Ches</span><span>~USD 200–400/mes</span><span><span class="ww">⚠</span> Costo elevado para el segmento</span></div>
-      <div class="trow"><span>Excel</span><span>Gratis</span><span><span class="xx">✗</span> Sin trazabilidad ni estados</span></div>
-      <div class="trow star"><span>TEXON</span><span>USD 30–60/mes</span><span><span class="cc">✔</span> Diseñado para este flujo exacto</span></div>
+
+    <div class="s7right">
+      <div class="table">
+        <div class="thead">
+          <span>Solución</span>
+          <span>Precio</span>
+          <span>Fit PyME textil</span>
+          <span>Por qué no alcanza</span>
+        </div>
+        <div class="trow">
+          <span>SAP / SAP B1</span>
+          <span>USD 50.000+</span>
+          <span><span class="xx">✗</span> No</span>
+          <span class="motive">Costo prohibitivo. Texcom lo analizó y lo descartó por precio y cambio cultural.</span>
+        </div>
+        <div class="trow">
+          <span>Odoo</span>
+          <span>Gratis + impl. cara</span>
+          <span><span class="xx">✗</span> No</span>
+          <span class="motive">Genérico. Curva de adopción alta. Requiere consultor de implementación.</span>
+        </div>
+        <div class="trow">
+          <span>Chess</span>
+          <span>~USD 200–400/mes</span>
+          <span><span class="ww">⚠</span> Parcial</span>
+          <span class="motive">Costo elevado para el segmento. No resuelve el flujo de tintorería tercerizada.</span>
+        </div>
+        <div class="trow">
+          <span>Excel / Sheets</span>
+          <span>Gratis</span>
+          <span><span class="xx">✗</span> No</span>
+          <span class="motive">Sin trazabilidad por rollo. Desactualizado siempre. Dakuba, Muter y 3 empresas más lo confirman.</span>
+        </div>
+        <div class="trow star">
+          <span class="sol">TEXON</span>
+          <span>USD 100/mes</span>
+          <span><span class="cc">✔</span> Sí</span>
+          <span class="motive">Diseñado para el flujo textil con tintorería. IA para planillas. Operativo desde el día 1.</span>
+        </div>
+      </div>
+
+      <div class="ctx">
+        <div class="ctx-item">
+          <div class="ci-lbl">Señal del mercado</div>
+          <p>Texcom pasó de 10–15 clientes grandes al 60% del volumen a muchos clientes chicos. Las PyMEs reciben más pedidos fragmentados — la trazabilidad se vuelve crítica.</p>
+        </div>
+        <div class="ctx-item">
+          <div class="ci-lbl">Objeción principal</div>
+          <p>"Argentina está caro para implementar tecnología." Nuestra respuesta: perder una venta por no saber si tenés stock cuesta más que USD 100/mes.</p>
+        </div>
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -841,13 +1059,15 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <div class="sl" id="s8">
   <div class="lbl lw">06 — NEGOCIO</div>
   <h2>MODELO DE NEGOCIOS</h2>
+  <div class="pv-strip">
+    <p><strong>Propuesta de valor:</strong> Texon es el sistema de trazabilidad que hace de puente entre la tintorería y el depósito para que el dueño sepa qué entra, qué sale, cuándo y cuánto vale, en tiempo real.</p>
+  </div>
   <div class="bmc">
 
-    <!-- SEGMENTOS -->
     <div class="bc blush">
       <div class="bc-icon">🏭</div>
       <div class="bc-lbl">Segmentos</div>
-      <h4>CLIENTES OBJETIVO</h4>
+      <h4>CLIENTES</h4>
       <ul>
         <li>PyMEs textiles 10–100 empleados</li>
         <li>Con tintorería externa</li>
@@ -856,22 +1076,20 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </ul>
     </div>
 
-    <!-- PROPUESTA DE VALOR (span 2 rows) -->
     <div class="bc sage span2">
       <div class="bc-icon">🎯</div>
-      <div class="bc-lbl">Propuesta de Valor</div>
-      <h4>POR QUÉ TEXON</h4>
+      <div class="bc-lbl">Flujo central</div>
+      <h4>CÓMO FUNCIONA</h4>
       <ul>
-        <li>Stock en tiempo real, sin cambiar el flujo operativo</li>
-        <li>Operario registra con QR desde el celular</li>
-        <li>Ventas ve stock y reserva sin llamar al depósito</li>
-        <li>Dueño ve kilos, valor y reservas en tiempo real</li>
-        <li>IA pre-carga planillas de tintorería</li>
-        <li>Implementación en un día, sin consultor</li>
+        <li>IA lee la planilla de tintorería y pre-carga los rollos</li>
+        <li>Operario escanea QR desde el celular y confirma ingreso</li>
+        <li>Ventas ve stock en tiempo real y reserva sin llamar al depósito</li>
+        <li>Depósito prepara el pedido guiado por la app</li>
+        <li>Dueño ve kilos, valor y reservas desde su dashboard</li>
+        <li>Cancelación libera reserva automáticamente</li>
       </ul>
     </div>
 
-    <!-- CANALES -->
     <div class="bc lav">
       <div class="bc-icon">📡</div>
       <div class="bc-lbl">Canales</div>
@@ -884,22 +1102,20 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </ul>
     </div>
 
-    <!-- FUENTES DE INGRESO -->
     <div class="bc dk">
       <div class="bc-icon">💰</div>
-      <div class="bc-lbl">Fuentes de Ingreso</div>
+      <div class="bc-lbl">Ingresos</div>
       <h4>CÓMO COBRAMOS</h4>
       <ul>
-        <li>SaaS USD 30–90/mes</li>
+        <li>SaaS USD 100/mes</li>
         <li>Setup fee USD 150–250</li>
-        <li>Módulos premium</li>
+        <li>Módulos futuros</li>
       </ul>
     </div>
 
-    <!-- RECURSOS CLAVE -->
     <div class="bc dk">
       <div class="bc-icon">⚙️</div>
-      <div class="bc-lbl">Recursos Clave</div>
+      <div class="bc-lbl">Recursos clave</div>
       <h4>LO QUE NECESITAMOS</h4>
       <ul>
         <li>PWA operario (QR + offline)</li>
@@ -909,10 +1125,9 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </ul>
     </div>
 
-    <!-- ESTRUCTURA DE COSTOS -->
     <div class="bc dk">
       <div class="bc-icon">📊</div>
-      <div class="bc-lbl">Estructura de Costos</div>
+      <div class="bc-lbl">Costos</div>
       <h4>DÓNDE GASTAMOS</h4>
       <ul>
         <li>Desarrollo (principal)</li>
@@ -922,14 +1137,13 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </ul>
     </div>
 
-    <!-- RELACIÓN CON CLIENTES -->
     <div class="bc lav">
       <div class="bc-icon">🤝</div>
-      <div class="bc-lbl">Relación con Clientes</div>
-      <h4>CÓMO RETENEMOS</h4>
+      <div class="bc-lbl">Retención</div>
+      <h4>CÓMO FIDELIZAMOS</h4>
       <ul>
         <li>Onboarding presencial</li>
-        <li>Soporte por WhatsApp</li>
+        <li>Soporte WhatsApp</li>
         <li>Updates continuos</li>
       </ul>
     </div>
@@ -940,29 +1154,25 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 <!-- S9 PRICING -->
 <div class="sl" id="s9">
   <div class="lbl lm">07 — PRICING</div>
-  <h2>FUENTES DE INGRESO</h2>
+  <h2>MODELO DE PRECIO</h2>
   <div class="plans">
-    <div class="plan base">
+    <div class="plan pro" style="max-width:480px;width:100%">
       <div class="pname">PLAN BASE</div>
-      <div class="price">USD 30<sub>/mes</sub></div>
+      <div class="price">USD 100<sub>/mes</sub></div>
       <div class="div"></div>
-      <ul><li>Hasta 3 usuarios</li><li>Stock en tiempo real (QR)</li><li>PWA del operario</li><li>Google Sheets para ventas</li><li>Hasta 500 rollos activos</li></ul>
-    </div>
-    <div class="plan pro">
-      <div class="badge">MÁS POPULAR</div>
-      <div class="pname">PLAN PRO</div>
-      <div class="price">USD 55<sub>/mes</sub></div>
-      <div class="div"></div>
-      <ul><li>Usuarios ilimitados</li><li>Valorización de inventario</li><li>IA para planillas de tintorería</li><li>Alertas de reserva vencida</li><li>Rollos ilimitados</li></ul>
-    </div>
-    <div class="plan ent">
-      <div class="pname">PLAN EMPRESA</div>
-      <div class="price">USD 90<sub>/mes</sub></div>
-      <div class="div"></div>
-      <ul><li>Todo Plan Pro</li><li>Múltiples depósitos</li><li>Integración Tango/Bejerman</li><li>Soporte prioritario por WhatsApp</li><li>Reportes exportables</li></ul>
+      <ul>
+        <li>Usuarios ilimitados</li>
+        <li>Stock en tiempo real (QR)</li>
+        <li>PWA del operario</li>
+        <li>IA para planillas de tintorería</li>
+        <li>Dashboard de ventas (Google Sheets)</li>
+        <li>Dashboard del dueño</li>
+        <li>Alertas de reserva vencida</li>
+        <li>Soporte por WhatsApp</li>
+      </ul>
     </div>
   </div>
-  <div class="foot">+ Setup fee único: USD 150–250 · ARR proyectado Año 1: ~USD 18.000</div>
+  <div class="foot">+ Setup fee único: USD 150–250 · Precio de lanzamiento · Módulos adicionales próximamente</div>
 </div>
 
 <!-- S10 DEMANDA -->
@@ -1021,7 +1231,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       <div class="ck"><div class="cx">✓</div><p>Fricción de adopción casi cero. Demo en planta, operativo desde el primer día.</p></div>
       <div class="ck"><div class="cx">✓</div><p>El operario como aliado. Registrar tiene que ser más fácil que no registrar.</p></div>
       <div class="ck"><div class="cx">✓</div><p>IA para planillas de tintorería. El cuello de botella que nadie más resuelve.</p></div>
-      <div class="ck"><div class="cx">✓</div><p>Validación real. Muter Textil, Mariela (consultora textil) y Texcom confirmaron el problema de forma independiente.</p></div>
+      <div class="ck"><div class="cx">✓</div><p>Validación real. 12 empresas y referentes del sector contactados. Las empresas sin sistema formal confirmaron el problema de forma unánime.</p></div>
     </div>
     <div class="right">
       <div class="bq">
@@ -1030,7 +1240,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </div>
       <div class="pilot">
         <div class="pd"></div>
-        <p><strong>En conversación:</strong> Muter Textil S.R.L. · Mariela — consultora con cartera activa de tejedurías CABA/GBA</p>
+        <p><strong>Próximo paso:</strong> Muter Textil S.R.L. va a probar el sistema · Mariela — consultora con cartera activa de tejedurías CABA/GBA</p>
       </div>
     </div>
   </div>
