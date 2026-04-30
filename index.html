@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEXON — Desafío 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root{
+  --y:#F5C518; --yd:#c9a000;
+  --bk:#111111; --w:#FAFAF8;
+  --g:#EDEAE2; --ink:#1a1a1a; --muted:#666;
+  --px:56px; --py:38px;
+  --gap:16px;
+  --r:6px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);
+  font-family:'DM Sans',sans-serif;cursor:none;user-select:none;font-size:17px}
+
+/* ─── CURSOR ─────────────────────────────────────────── */
+#cur{position:fixed;pointer-events:none;z-index:9999;
+  width:13px;height:13px;border-radius:50%;background:var(--y);
+  transform:translate(-50%,-50%);
+  transition:width .14s,height .14s,border-radius .14s,opacity .15s}
+#cur.sq{border-radius:3px;transform:translate(-50%,-50%) rotate(45deg)}
+#cur.big{width:56px;height:56px;opacity:.35;border-radius:50%}
+
+/* ─── PROGRESS ───────────────────────────────────────── */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--y);z-index:1000;
+  transition:width .56s cubic-bezier(.77,0,.18,1);width:8.33%}
+
+/* ─── COUNTER ────────────────────────────────────────── */
+#ctr{position:fixed;bottom:24px;right:26px;z-index:1000;
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:5px;color:var(--muted)}
+#ctr b{color:var(--ink);font-size:24px}
+.inv #ctr{color:rgba(255,255,255,.3)}
+.inv #ctr b{color:rgba(255,255,255,.8)}
+
+/* ─── DOTS ───────────────────────────────────────────── */
+#dots{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:1000;display:flex;gap:8px;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.18);
+  cursor:pointer;transition:all .3s}
+.dot.on{background:var(--y);transform:scale(1.65)}
+.inv .dot{background:rgba(255,255,255,.22)}
+.inv .dot.on{background:var(--y)}
+
+/* ─── NAV ARROWS ─────────────────────────────────────── */
+#nav-left{position:fixed;top:50%;left:18px;transform:translateY(-50%);z-index:1000}
+#nav-right{position:fixed;top:50%;right:18px;transform:translateY(-50%);z-index:1000}
+#nav-left button,#nav-right button{
+  width:48px;height:48px;border-radius:50%;
+  border:1.5px solid rgba(0,0,0,.18);
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .22s;
+}
+#nav-left button:hover,#nav-right button:hover{
+  background:var(--y);border-color:var(--y);transform:scale(1.12)}
+#nav-left button svg,#nav-right button svg{
+  width:16px;height:16px;stroke:var(--ink);fill:none;
+  stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.inv #nav-left button,.inv #nav-right button{
+  background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.inv #nav-left button svg,.inv #nav-right button svg{stroke:white}
+.inv #nav-left button:hover,.inv #nav-right button:hover{background:var(--y);border-color:var(--y)}
+.inv #nav-left button:hover svg,.inv #nav-right button:hover svg{stroke:var(--bk)}
+
+/* ─── DECK / SLIDES ──────────────────────────────────── */
+#deck{position:fixed;inset:0}
+.sl{position:absolute;inset:0;visibility:hidden;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:var(--py) var(--px);gap:var(--gap)}
+.sl.active{visibility:visible}
+
+/* ─── TRANSITIONS ────────────────────────────────────── */
+@keyframes inR  {from{transform:translateX(100vw)}to{transform:translateX(0)}}
+@keyframes outL {from{transform:translateX(0)}   to{transform:translateX(-100vw)}}
+@keyframes inL  {from{transform:translateX(-100vw)}to{transform:translateX(0)}}
+@keyframes outR {from{transform:translateX(0)}   to{transform:translateX(100vw)}}
+@keyframes up   {from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dn   {from{opacity:0;transform:translateY(-34px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sc   {from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+@keyframes li   {from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes fd   {from{opacity:0}to{opacity:1}}
+@keyframes barU {from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pls  {0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.45)}70%{box-shadow:0 0 0 12px rgba(34,197,94,0)}}
+@keyframes spin {to{transform:rotate(360deg)}}
+@keyframes tick {from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes mkq  {from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes flt  {0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+/* ─── CHIP / TAG ─────────────────────────────────────── */
+.chip{display:inline-flex;align-items:center;font-family:'Bebas Neue',sans-serif;
+  font-size:12px;letter-spacing:3px;padding:6px 15px;border-radius:2px}
+.chip.y {background:var(--y);color:var(--bk)}
+.chip.bk{background:var(--bk);color:var(--y)}
+.chip.out{background:transparent;color:var(--ink);border:1.5px solid rgba(0,0,0,.25)}
+
+/* ─── LABEL ──────────────────────────────────────────── */
+.lbl{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:5px}
+.lm{color:var(--muted)} .lw{color:rgba(255,255,255,.55)} .ly{color:rgba(0,0,0,.55)}
+
+/* ─── TÍTULOS GLOBALES ───────────────────────────────── */
+.sl h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:68px;letter-spacing:2px;line-height:.92;
+}
+
+/* ════════════════════════════════════════
+   S1  PORTADA
+════════════════════════════════════════ */
+#s1{background:var(--w);padding:0;gap:0;justify-content:space-between}
+#s1 .dot-bg{position:absolute;inset:0;
+  background-image:radial-gradient(rgba(0,0,0,.1) 1px,transparent 1px);
+  background-size:28px 28px;z-index:0;opacity:.45}
+#s1 .circ{position:absolute;right:-160px;top:50%;transform:translateY(-50%);
+  width:580px;height:580px;border-radius:50%;
+  background:var(--y);opacity:.16;z-index:0;animation:flt 10s ease-in-out infinite}
+#s1 .body{position:relative;z-index:1;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  gap:22px;padding:var(--py) var(--px)}
+#s1 .eyebrow{display:flex;align-items:center;gap:14px}
+#s1 .ey-line{width:52px;height:2px;background:var(--y);
+  transform-origin:left;animation:li .6s ease .2s both}
+#s1 .logo{font-family:'Bebas Neue',sans-serif;font-size:180px;line-height:.82;
+  color:var(--bk);letter-spacing:8px;position:relative}
+#s1 .logo .shad{position:absolute;inset:0;color:var(--y);opacity:.08;
+  transform:translate(10px,12px);pointer-events:none}
+#s1 .tagline{font-size:23px;color:#444;line-height:1.45;max-width:580px;font-weight:300}
+#s1 .tagline strong{color:var(--ink);font-weight:600}
+#s1 .chips{display:flex;gap:10px;flex-wrap:wrap}
+#s1 .foot{position:relative;z-index:1;border-top:1.5px solid var(--g);
+  padding:18px var(--px);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+#s1 .foot .team{font-size:14px;color:var(--muted)}
+#s1 .foot .yr{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:4px;color:var(--muted)}
+#s1.active .eyebrow .chip{animation:fd .45s ease .05s both}
+#s1.active .logo   {animation:up .75s cubic-bezier(.22,1,.36,1) .1s both}
+#s1.active .tagline{animation:up .6s ease .32s both}
+#s1.active .chips  {animation:up .5s ease .48s both}
+#s1.active .foot   {animation:fd .55s ease .62s both}
+
+/* ════════════════════════════════════════
+   S2  PROBLEMA
+════════════════════════════════════════ */
+#s2{background:var(--bk)}
+#s2 h2{color:var(--w)}
+#s2 h2 em{color:var(--y);font-style:normal}
+#s2 .top{display:flex;justify-content:space-between;align-items:flex-end}
+#s2 .bnum{font-family:'Bebas Neue',sans-serif;font-size:160px;
+  color:rgba(255,255,255,.04);line-height:1;pointer-events:none}
+#s2 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0}
+#s2 .card{border:1px solid rgba(255,255,255,.09);border-radius:var(--r);
+  padding:28px;display:flex;flex-direction:column;gap:14px;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .38s cubic-bezier(.34,1.56,.64,1)}
+#s2 .card:hover{border-color:var(--y);transform:translateY(-8px)}
+#s2 .card .bgn{position:absolute;bottom:-6px;right:12px;
+  font-family:'Bebas Neue',sans-serif;font-size:90px;
+  color:rgba(255,255,255,.05);line-height:1;transition:color .3s}
+#s2 .card:hover .bgn{color:rgba(245,197,24,.07)}
+#s2 .card .ic{font-size:36px}
+#s2 .card h3{font-family:'Bebas Neue',sans-serif;font-size:28px;
+  letter-spacing:1px;color:var(--w);line-height:1.1}
+#s2 .card p{font-size:16px;color:rgba(255,255,255,.78);line-height:1.72;flex:1}
+#s2 .card .bar{height:3px;background:var(--y);
+  transform:scaleX(0);transform-origin:left;transition:transform .45s}
+#s2 .card:hover .bar{transform:scaleX(1)}
+#s2 .qband{background:var(--y);border-radius:var(--r);
+  padding:16px 26px;display:flex;align-items:center;gap:14px}
+#s2 .qband .qi{font-family:'Bebas Neue',sans-serif;font-size:56px;
+  color:rgba(0,0,0,.15);line-height:1;flex-shrink:0}
+#s2 .qband p{font-size:18px;font-weight:600;color:var(--bk);font-style:italic;line-height:1.5}
+#s2.active .top{animation:dn .55s cubic-bezier(.22,1,.36,1) .1s both}
+#s2.active .card:nth-child(1){animation:up .48s ease .26s both}
+#s2.active .card:nth-child(2){animation:up .48s ease .36s both}
+#s2.active .card:nth-child(3){animation:up .48s ease .46s both}
+#s2.active .qband{animation:up .45s ease .58s both}
+
+/* ════════════════════════════════════════
+   S3  INTERSTITIAL
+════════════════════════════════════════ */
+#s3{background:var(--y);justify-content:space-between}
+#s3 .stop{display:flex;justify-content:space-between;align-items:flex-start}
+#s3 .snum{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:5px;color:rgba(0,0,0,.32)}
+#s3 .ring{width:80px;height:80px;border-radius:50%;border:3px solid rgba(0,0,0,.18);
+  animation:spin 14s linear infinite;
+  display:flex;align-items:center;justify-content:center}
+#s3 .ring::after{content:'';width:12px;height:12px;border-radius:50%;background:rgba(0,0,0,.22)}
+#s3 .big{font-family:'Bebas Neue',sans-serif;font-size:160px;line-height:.86;
+  letter-spacing:4px;color:var(--bk)}
+#s3 .ticker{overflow:hidden;border-top:2px solid rgba(0,0,0,.12);padding-top:14px}
+#s3 .inner{display:flex;gap:40px;white-space:nowrap;animation:mkq 13s linear infinite;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:4px;color:rgba(0,0,0,.32)}
+#s3 .inner span{flex-shrink:0}
+#s3.active .stop  {animation:dn .5s ease .08s both}
+#s3.active .big   {animation:up .72s cubic-bezier(.22,1,.36,1) .2s both}
+#s3.active .ticker{animation:fd .55s ease .42s both}
+
+/* ════════════════════════════════════════
+   S4  PROPUESTA
+════════════════════════════════════════ */
+#s4{background:var(--w)}
+#s4 h2{font-size:50px;letter-spacing:1.5px;line-height:1.05;color:var(--bk)}
+#s4 h2 em{color:var(--y);font-style:normal}
+#s4 .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0}
+#s4 .col{border:2px solid var(--g);border-radius:var(--r);
+  padding:28px;display:flex;flex-direction:column;gap:14px;
+  cursor:pointer;background:var(--w);position:relative;overflow:hidden;
+  transition:border-color .3s,transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .38s}
+#s4 .col::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--y);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+#s4 .col:hover{border-color:var(--y);transform:translateY(-8px);box-shadow:0 20px 48px rgba(0,0,0,.08)}
+#s4 .col:hover::after{transform:scaleX(1)}
+#s4 .col .icon{font-size:34px}
+#s4 .col p{font-size:17px;color:#444;line-height:1.72;flex:1}
+#s4.active .lbl   {animation:fd .4s ease .1s both}
+#s4.active h2     {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s4.active .col:nth-child(1){animation:sc .5s ease .34s both}
+#s4.active .col:nth-child(2){animation:sc .5s ease .46s both}
+#s4.active .col:nth-child(3){animation:sc .5s ease .58s both}
+
+/* ════════════════════════════════════════
+   S5  VALIDACIÓN
+════════════════════════════════════════ */
+#s5{background:var(--bk)}
+#s5 h2{color:var(--w)}
+#s5 .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0}
+#s5 .left{display:flex;flex-direction:column;gap:10px}
+#s5 .right{display:flex;flex-direction:column;gap:12px}
+#s5 .vi{display:flex;align-items:flex-start;gap:14px;
+  padding:14px 18px;border:1px solid rgba(255,255,255,.09);border-radius:var(--r);
+  cursor:pointer;transition:border-color .25s,transform .25s}
+#s5 .vi:hover{border-color:var(--y);transform:translateX(6px)}
+#s5 .vi .vd{width:9px;height:9px;border-radius:50%;background:var(--y);flex-shrink:0;margin-top:6px}
+#s5 .vi p{font-size:17px;color:rgba(255,255,255,.82);line-height:1.62}
+#s5 .stat{background:var(--y);border-radius:var(--r);padding:18px 22px;
+  display:flex;align-items:center;gap:16px;margin-top:auto}
+#s5 .stat .sn{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--bk);line-height:1;flex-shrink:0}
+#s5 .stat p{font-size:18px;font-weight:600;color:var(--bk);line-height:1.4}
+#s5 .vq{border:1px solid rgba(255,255,255,.09);border-radius:var(--r);
+  padding:22px;border-left:4px solid var(--y);flex:1;
+  display:flex;flex-direction:column;justify-content:space-between;
+  cursor:pointer;transition:transform .3s}
+#s5 .vq:hover{transform:scale(1.02)}
+#s5 .vq blockquote{font-size:18px;color:rgba(255,255,255,.92);line-height:1.7;font-style:italic}
+#s5 .vq cite{font-size:14px;color:var(--y);font-style:normal;font-weight:600;margin-top:10px;display:block}
+#s5.active .head           {animation:dn .52s ease .1s both}
+#s5.active .vi:nth-child(1){animation:up .38s ease .26s both}
+#s5.active .vi:nth-child(2){animation:up .38s ease .34s both}
+#s5.active .vi:nth-child(3){animation:up .38s ease .42s both}
+#s5.active .vi:nth-child(4){animation:up .38s ease .5s both}
+#s5.active .stat           {animation:sc .48s ease .6s both}
+#s5.active .vq:nth-child(1){animation:sc .46s ease .3s both}
+#s5.active .vq:nth-child(2){animation:sc .46s ease .46s both}
+
+/* ════════════════════════════════════════
+   S6  BUYER PERSONAS
+════════════════════════════════════════ */
+#s6{background:var(--w)}
+#s6 h2{color:var(--bk)}
+#s6 .pers{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0}
+#s6 .p{border:2px solid var(--g);border-radius:var(--r);
+  padding:26px;display:flex;flex-direction:column;gap:11px;
+  cursor:pointer;background:var(--w);position:relative;overflow:hidden;
+  transition:border-color .3s,transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .38s}
+#s6 .p::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--y);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+#s6 .p:hover{border-color:var(--y);transform:translateY(-7px);box-shadow:0 18px 44px rgba(0,0,0,.08)}
+#s6 .p:hover::before{transform:scaleX(1)}
+#s6 .pn{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--bk);letter-spacing:2px}
+#s6 .pr{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+#s6 .pd{height:1.5px;background:var(--g)}
+#s6 .p blockquote{font-size:17px;color:#333;line-height:1.68;font-style:italic;flex:1;
+  padding-left:12px;border-left:3px solid var(--y)}
+#s6 .pl{font-size:11px;color:var(--yd);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:4px}
+#s6 .pv{font-size:14px;color:#666;line-height:1.45;margin-top:3px}
+#s6 .foot{font-size:13px;color:var(--muted);font-style:italic}
+#s6.active .lbl{animation:fd .4s ease .1s both}
+#s6.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s6.active .p:nth-child(1){animation:sc .5s ease .32s both}
+#s6.active .p:nth-child(2){animation:sc .5s ease .44s both}
+#s6.active .p:nth-child(3){animation:sc .5s ease .56s both}
+#s6.active .foot{animation:fd .5s ease .7s both}
+
+/* ════════════════════════════════════════
+   S7  MERCADO (amarillo)
+════════════════════════════════════════ */
+#s7{background:var(--y)}
+#s7 h2{color:var(--bk)}
+#s7 .body{display:grid;grid-template-columns:1fr 2fr;gap:var(--gap);flex:1;min-height:0}
+#s7 .tams{display:flex;flex-direction:column;gap:11px}
+#s7 .tr{border-radius:var(--r);padding:16px 20px;cursor:pointer;
+  transition:transform .26s;display:flex;align-items:center;gap:14px}
+#s7 .tr:hover{transform:translateX(7px) scale(1.02)}
+#s7 .t1{background:var(--bk)}
+#s7 .t2{background:rgba(0,0,0,.15)}
+#s7 .t3{background:rgba(0,0,0,.1)}
+#s7 .tl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;min-width:36px}
+#s7 .t1 .tl{color:var(--y)}
+#s7 .t2 .tl,#s7 .t3 .tl{color:rgba(0,0,0,.65)}
+#s7 .tv{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1}
+#s7 .t1 .tv{color:var(--w)}
+#s7 .t2 .tv,#s7 .t3 .tv{color:var(--bk)}
+#s7 .td{font-size:15px;line-height:1.4}
+#s7 .t1 .td{color:rgba(255,255,255,.4)}
+#s7 .t2 .td,#s7 .t3 .td{color:rgba(0,0,0,.72)}
+#s7 .table{display:flex;flex-direction:column;border-radius:var(--r);
+  overflow:hidden;border:1.5px solid rgba(0,0,0,.15)}
+#s7 .thead{display:grid;grid-template-columns:1.3fr 1.1fr 1.5fr;
+  background:var(--bk);padding:13px 18px}
+#s7 .thead span{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2.5px;color:var(--y)}
+#s7 .trow{display:grid;grid-template-columns:1.3fr 1.1fr 1.5fr;
+  padding:13px 18px;align-items:center;cursor:pointer;
+  border-top:1px solid rgba(0,0,0,.08);transition:background .2s}
+#s7 .trow:hover{background:rgba(0,0,0,.09)}
+#s7 .trow.star{background:var(--bk);border-top-color:transparent}
+#s7 .trow.star:hover{background:rgba(0,0,0,.88)}
+#s7 .trow span{font-size:15px;color:rgba(0,0,0,.85)}
+#s7 .trow.star span{color:var(--y);font-weight:700;font-family:'Bebas Neue',sans-serif;font-size:16px}
+#s7 .cc{color:#16a34a}#s7 .xx{color:#cc2222}#s7 .ww{color:#b85400}
+#s7.active .lbl  {animation:fd .4s ease .1s both}
+#s7.active h2    {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s7.active .tr   {animation:up .42s ease calc(.3s + var(--i)*.1s) both}
+#s7.active .table{animation:sc .52s ease .44s both}
+
+/* ════════════════════════════════════════
+   S8  MODELO NEGOCIOS
+════════════════════════════════════════ */
+#s8{background:var(--bk)}
+#s8 h2{color:var(--w)}
+#s8 .biz{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;
+  gap:12px;flex:1;min-height:0}
+#s8 .bc{border-radius:var(--r);padding:22px;
+  display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:transform .3s}
+#s8 .bc:hover{transform:scale(1.03)}
+#s8 .bc.y {background:var(--y)}
+#s8 .bc.dk{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
+#s8 .bc h4{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2.5px}
+#s8 .bc.y  h4{color:rgba(0,0,0,.5)}
+#s8 .bc.dk h4{color:var(--y)}
+#s8 .bc p{font-size:16px;line-height:1.68}
+#s8 .bc.y  p{color:rgba(0,0,0,.6)}
+#s8 .bc.dk p{color:rgba(255,255,255,.82)}
+#s8.active .lbl{animation:fd .4s ease .1s both}
+#s8.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s8.active .bc:nth-child(1){animation:sc .38s ease .26s both}
+#s8.active .bc:nth-child(2){animation:sc .38s ease .33s both}
+#s8.active .bc:nth-child(3){animation:sc .38s ease .40s both}
+#s8.active .bc:nth-child(4){animation:sc .38s ease .47s both}
+#s8.active .bc:nth-child(5){animation:sc .38s ease .54s both}
+#s8.active .bc:nth-child(6){animation:sc .38s ease .61s both}
+
+/* ════════════════════════════════════════
+   S9  PRICING
+════════════════════════════════════════ */
+#s9{background:var(--w)}
+#s9 h2{color:var(--bk)}
+#s9 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0}
+#s9 .plan{border-radius:var(--r);padding:28px;
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;cursor:pointer;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .38s}
+#s9 .plan:hover{transform:translateY(-10px)}
+#s9 .base{background:var(--g);border:2px solid var(--g)}
+#s9 .pro {background:var(--bk);border:2px solid var(--y);box-shadow:0 6px 26px rgba(245,197,24,.2)}
+#s9 .ent {background:var(--g);border:2px solid var(--g)}
+#s9 .pro:hover{box-shadow:0 22px 52px rgba(245,197,24,.35)}
+#s9 .plan:not(.pro):hover{box-shadow:0 22px 52px rgba(0,0,0,.1)}
+#s9 .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--y);color:var(--bk);font-family:'Bebas Neue',sans-serif;
+  font-size:11px;letter-spacing:2.5px;padding:4px 14px;border-radius:2px;white-space:nowrap}
+#s9 .pname{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2.5px}
+#s9 .base .pname,#s9 .ent .pname{color:var(--muted)}
+#s9 .pro .pname{color:var(--y)}
+#s9 .price{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1}
+#s9 .base .price,#s9 .ent .price{color:var(--bk)}
+#s9 .pro .price{color:var(--w)}
+#s9 .price sub{font-size:16px;font-family:'DM Sans',sans-serif;font-weight:300}
+#s9 .base .price sub,#s9 .ent .price sub{color:var(--muted)}
+#s9 .pro .price sub{color:rgba(255,255,255,.38)}
+#s9 .div{height:1.5px}
+#s9 .base .div,#s9 .ent .div{background:rgba(0,0,0,.1)}
+#s9 .pro .div{background:rgba(255,255,255,.1)}
+#s9 ul{list-style:none;display:flex;flex-direction:column;gap:8px;flex:1}
+#s9 li{display:flex;gap:10px;align-items:flex-start;font-size:16px;line-height:1.55}
+#s9 .base li,#s9 .ent li{color:#3a3a3a}
+#s9 .pro li{color:rgba(255,255,255,.9)}
+#s9 li::before{content:'→';color:var(--y);font-size:11px;margin-top:3px;flex-shrink:0;font-weight:700}
+#s9 .foot{font-size:13px;color:var(--muted);font-style:italic}
+#s9.active .lbl{animation:fd .4s ease .1s both}
+#s9.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s9.active .plan:nth-child(1){animation:sc .48s ease .30s both}
+#s9.active .plan:nth-child(2){animation:sc .48s ease .44s both}
+#s9.active .plan:nth-child(3){animation:sc .48s ease .58s both}
+#s9.active .foot{animation:fd .5s ease .72s both}
+
+/* ════════════════════════════════════════
+   S10  DEMANDA
+════════════════════════════════════════ */
+#s10{background:var(--bk)}
+#s10 h2{color:var(--w)}
+#s10 .body{display:grid;grid-template-columns:1fr 2fr;gap:var(--gap);flex:1;min-height:0}
+#s10 .ns{display:flex;flex-direction:column;gap:10px}
+#s10 .nc{border-radius:var(--r);padding:16px 20px;cursor:pointer;
+  transition:transform .28s;display:flex;flex-direction:column;gap:3px}
+#s10 .nc:hover{transform:scale(1.04)}
+#s10 .n1{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
+#s10 .n2{background:rgba(245,197,24,.1);border:1px solid rgba(245,197,24,.22)}
+#s10 .n3{background:var(--y)}
+#s10 .nl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3.5px}
+#s10 .n1 .nl,#s10 .n2 .nl{color:rgba(255,255,255,.6)}
+#s10 .n3 .nl{color:rgba(0,0,0,.45)}
+#s10 .nv{font-family:'Bebas Neue',sans-serif;font-size:50px;line-height:1}
+#s10 .n1 .nv,#s10 .n2 .nv{color:var(--w)}
+#s10 .n3 .nv{color:var(--bk)}
+#s10 .nd{font-size:15px}
+#s10 .n1 .nd,#s10 .n2 .nd{color:rgba(255,255,255,.72)}
+#s10 .n3 .nd{color:rgba(0,0,0,.5)}
+#s10 .chart{display:flex;flex-direction:column;gap:12px}
+#s10 .ct{font-family:'Bebas Neue',sans-serif;font-size:16px;
+  color:rgba(255,255,255,.75);letter-spacing:3px}
+#s10 .bars{display:flex;align-items:flex-end;gap:16px;flex:1;min-height:0}
+#s10 .bc2{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+#s10 .bv{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--y)}
+#s10 .bt{width:100%;background:rgba(255,255,255,.07);border-radius:3px 3px 0 0;overflow:hidden}
+#s10 .bf{width:100%;background:var(--y);border-radius:3px 3px 0 0;
+  transform-origin:bottom;transform:scaleY(0)}
+#s10 .bl{font-size:14px;color:rgba(255,255,255,.72);text-align:center;line-height:1.35}
+#s10 .cf{font-size:13px;color:rgba(255,255,255,.55);font-style:italic}
+#s10.active .lbl  {animation:fd .4s ease .1s both}
+#s10.active h2    {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s10.active .nc   {animation:sc .4s ease calc(.26s + var(--i)*.12s) both}
+#s10.active .chart{animation:up .48s ease .44s both}
+#s10.active .bf   {animation:barU .88s cubic-bezier(.34,1.56,.64,1) calc(.6s + var(--d)) both}
+
+/* ════════════════════════════════════════
+   S11  MVP — split
+════════════════════════════════════════ */
+#s11{display:grid;grid-template-columns:2fr 3fr;padding:0;gap:0}
+#s11 .left{background:var(--y);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:var(--py) 44px;position:relative;overflow:hidden}
+#s11 .left .bgn{position:absolute;bottom:-14px;left:-6px;
+  font-family:'Bebas Neue',sans-serif;font-size:260px;
+  color:rgba(0,0,0,.07);line-height:1;pointer-events:none;letter-spacing:-6px}
+#s11 .llbl{position:relative;z-index:1;
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:rgba(0,0,0,.32)}
+#s11 .left h2{position:relative;z-index:1;font-size:68px;color:var(--bk)}
+#s11 .flow{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px}
+#s11 .fs{background:var(--bk);color:var(--y);
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;
+  padding:9px 16px;border-radius:2px;
+  display:inline-flex;align-items:center;justify-content:space-between;gap:8px}
+#s11 .fs::after{content:'↓';font-size:10px;opacity:.35}
+#s11 .fs:last-child::after{content:''}
+#s11 .right{display:grid;grid-template-columns:1fr 1fr;background:var(--g);gap:2px;padding:2px}
+#s11 .mod{background:var(--w);padding:28px 32px;
+  display:flex;flex-direction:column;gap:13px;cursor:pointer;transition:background .28s}
+#s11 .mod:hover{background:var(--bk)}
+#s11 .mod:hover h4{color:var(--y)}
+#s11 .mod:hover p{color:rgba(255,255,255,.58)}
+#s11 .mod .ic{font-size:32px}
+#s11 .mod h4{font-family:'Bebas Neue',sans-serif;font-size:20px;
+  letter-spacing:1.5px;color:var(--bk);transition:color .28s}
+#s11 .mod p{font-size:16px;color:#444;line-height:1.68;transition:color .28s}
+#s11.active .llbl           {animation:fd .4s ease .1s both}
+#s11.active .left h2        {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s11.active .fs:nth-child(1){animation:tick .3s ease .32s both}
+#s11.active .fs:nth-child(2){animation:tick .3s ease .41s both}
+#s11.active .fs:nth-child(3){animation:tick .3s ease .5s both}
+#s11.active .fs:nth-child(4){animation:tick .3s ease .59s both}
+#s11.active .mod:nth-child(1){animation:fd .38s ease .28s both}
+#s11.active .mod:nth-child(2){animation:fd .38s ease .38s both}
+#s11.active .mod:nth-child(3){animation:fd .38s ease .48s both}
+#s11.active .mod:nth-child(4){animation:fd .38s ease .58s both}
+
+/* ════════════════════════════════════════
+   S12  CIERRE
+════════════════════════════════════════ */
+#s12{background:var(--w)}
+#s12::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--y);z-index:1}
+#s12 h2{color:var(--bk)}
+#s12 .body{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--gap);flex:1;min-height:0}
+#s12 .checks{display:flex;flex-direction:column;gap:10px}
+#s12 .ck{display:flex;gap:14px;align-items:flex-start;
+  padding:14px 18px;background:var(--g);border:1.5px solid var(--g);border-radius:var(--r);
+  cursor:pointer;transition:border-color .28s,transform .28s}
+#s12 .ck:hover{border-color:var(--y);transform:translateX(5px)}
+#s12 .ck .cx{width:26px;height:26px;border-radius:2px;background:var(--y);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;margin-top:1px;font-weight:700;color:var(--bk)}
+#s12 .ck p{font-size:17px;color:#333;line-height:1.58}
+#s12 .right{display:flex;flex-direction:column;gap:12px}
+#s12 .bq{background:var(--bk);border-radius:var(--r);
+  padding:32px;flex:1;display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;cursor:pointer;transition:transform .28s}
+#s12 .bq:hover{transform:scale(1.02)}
+#s12 .bq::before{content:'"';position:absolute;top:-12px;left:14px;
+  font-family:'Bebas Neue',sans-serif;font-size:150px;
+  color:var(--y);opacity:.08;line-height:1;pointer-events:none}
+#s12 .bq blockquote{font-size:19px;font-weight:500;
+  color:rgba(255,255,255,.88);line-height:1.62;position:relative;z-index:1}
+#s12 .bq .attr{font-size:14px;color:rgba(255,255,255,.55);
+  margin-top:14px;font-style:italic;position:relative;z-index:1}
+#s12 .pilot{background:var(--g);border:1.5px solid var(--g);border-radius:var(--r);
+  padding:14px 18px;display:flex;align-items:center;gap:13px;
+  cursor:pointer;transition:border-color .28s,box-shadow .28s}
+#s12 .pilot:hover{border-color:#4ade80;box-shadow:0 5px 18px rgba(74,222,128,.12)}
+#s12 .pd{width:13px;height:13px;border-radius:50%;background:#22c55e;animation:pls 2s infinite;flex-shrink:0}
+#s12 .pilot p{font-size:16px;color:#444;line-height:1.5}
+#s12 .pilot p strong{color:var(--bk)}
+#s12.active .lbl{animation:fd .4s ease .1s both}
+#s12.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
+#s12.active .ck:nth-child(1){animation:tick .38s ease .26s both}
+#s12.active .ck:nth-child(2){animation:tick .38s ease .34s both}
+#s12.active .ck:nth-child(3){animation:tick .38s ease .42s both}
+#s12.active .ck:nth-child(4){animation:tick .38s ease .50s both}
+#s12.active .ck:nth-child(5){animation:tick .38s ease .58s both}
+#s12.active .bq   {animation:sc .54s ease .30s both}
+#s12.active .pilot{animation:up .48s ease .60s both}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="prog"></div>
+<div id="ctr"><b id="cn">01</b>&thinsp;/&thinsp;12</div>
+
+<div id="nav-left">
+  <button aria-label="Anterior">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+</div>
+<div id="nav-right">
+  <button aria-label="Siguiente">
+    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+</div>
+
+<div id="dots"></div>
+<div id="deck">
+
+<!-- S1 PORTADA -->
+<div class="sl active" id="s1">
+  <div class="dot-bg"></div>
+  <div class="circ"></div>
+  <div class="body">
+    <div class="eyebrow">
+      <div class="ey-line"></div>
+      <span class="chip y">DESAFÍO 6 · ITBA 2026</span>
+    </div>
+    <div class="logo"><div class="shad">TEXON</div>TEXON</div>
+    <div class="tagline">
+      Sistema de gestión de stock para PyMEs textiles argentinas.<br>
+      <strong>Fácil para el operario. Claro para el dueño.</strong>
+    </div>
+    <div class="chips">
+      <span class="chip out">MVP + MDN</span>
+      <span class="chip bk">Gestión de Operaciones</span>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="team">Tomás Slonimsky · Lisandro Medici · Trinidad Silva Felgueras · Felipe Musa</div>
+    <div class="yr">ITBA · 2026</div>
+  </div>
+</div>
+
+<!-- S2 PROBLEMA -->
+<div class="sl" id="s2">
+  <div class="top">
+    <div>
+      <div class="lbl lw" style="margin-bottom:6px">01 — PROBLEMA</div>
+      <h2>PROBLEMÁTICAS<br><em>IDENTIFICADAS</em></h2>
+    </div>
+    <div class="bnum">01</div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="bgn">01</div>
+      <div class="ic">✗</div>
+      <h3>Ventas vende<br>lo que no hay</h3>
+      <p>El Excel está desactualizado. Belén cierra pedidos que el depósito no puede cumplir. Conflicto recurrente, pérdida de clientes.</p>
+      <div class="bar"></div>
+    </div>
+    <div class="card">
+      <div class="bgn">02</div>
+      <div class="ic">📦</div>
+      <h3>El depósito<br>no registra nada</h3>
+      <p>Alta rotación de encargados. Sin una herramienta simple, los movimientos no se anotan. La memoria del encargado se va con él.</p>
+      <div class="bar"></div>
+    </div>
+    <div class="card">
+      <div class="bgn">03</div>
+      <div class="ic">⚠</div>
+      <h3>El dueño<br>no sabe qué tiene</h3>
+      <p>Sin visibilidad del inventario ni su valor. Compra y producción se deciden a ciegas. El stock es el activo central. Invisible.</p>
+      <div class="bar"></div>
+    </div>
+  </div>
+  <div class="qband">
+    <div class="qi">"</div>
+    <p>Yo sé lo que compré. No sé lo que tengo. — Hernán, dueño de PyME textil</p>
+  </div>
+</div>
+
+<!-- S3 INTERSTITIAL -->
+<div class="sl" id="s3">
+  <div class="stop">
+    <div class="snum">02 — PROPUESTA DE VALOR</div>
+    <div class="ring"></div>
+  </div>
+  <div class="big">PROPUESTA<br>DE VALOR</div>
+  <div class="ticker">
+    <div class="inner">
+      <span>OPERARIO</span><span>&nbsp;·&nbsp;</span>
+      <span>VENTAS</span><span>&nbsp;·&nbsp;</span>
+      <span>DUEÑO</span><span>&nbsp;·&nbsp;</span>
+      <span>STOCK EN TIEMPO REAL</span><span>&nbsp;·&nbsp;</span>
+      <span>QR · PWA · SIN FRICCIÓN</span><span>&nbsp;·&nbsp;</span>
+      <span>OPERARIO</span><span>&nbsp;·&nbsp;</span>
+      <span>VENTAS</span><span>&nbsp;·&nbsp;</span>
+      <span>DUEÑO</span><span>&nbsp;·&nbsp;</span>
+      <span>STOCK EN TIEMPO REAL</span><span>&nbsp;·&nbsp;</span>
+      <span>QR · PWA · SIN FRICCIÓN</span><span>&nbsp;·&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+<!-- S4 PROPUESTA -->
+<div class="sl" id="s4">
+  <div class="lbl lm">02 — PROPUESTA DE VALOR</div>
+  <h2>Una herramienta tan fácil que el operario prefiere<br><em>usarla a no usarla</em> — y al dueño le da <em>visibilidad real</em> por primera vez.</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="icon">👷</div>
+      <span class="chip y">OPERARIO</span>
+      <p>Escanea el QR con el celular y confirma. Sin ir a la PC. Sin formularios. Se aprende en un día.</p>
+    </div>
+    <div class="col">
+      <div class="icon">💼</div>
+      <span class="chip y">VENTAS · BELÉN</span>
+      <p>Ve el stock en tiempo real. Reserva rollos con un clic. Sin tener que llamar al depósito antes de cada venta.</p>
+    </div>
+    <div class="col">
+      <div class="icon">👁</div>
+      <span class="chip y">DUEÑO · HERNÁN</span>
+      <p>Sabe cuántos kilos tiene de cada artículo y color, y a qué costo, en todo momento. Sin depender de nadie.</p>
+    </div>
+  </div>
+</div>
+
+<!-- S5 VALIDACIÓN -->
+<div class="sl" id="s5">
+  <div class="head">
+    <div class="lbl lw" style="margin-bottom:6px">03 — VALIDACIÓN</div>
+    <h2>LO QUE NOS DIJO EL MERCADO</h2>
+  </div>
+  <div class="grid">
+    <div class="left">
+      <div class="vi"><div class="vd"></div><p>4+ visitas a <strong>Muter Textil</strong> — observación directa en planta</p></div>
+      <div class="vi"><div class="vd"></div><p><strong>Mariela</strong> — experta en WMS, 20 años en la industria textil argentina</p></div>
+      <div class="vi"><div class="vd"></div><p><strong>Texcom</strong> — empresa textil con 75 años en el sector</p></div>
+      <div class="vi"><div class="vd"></div><p>Encargado de depósito de Muter — pain points operativos reales</p></div>
+      <div class="stat">
+        <div class="sn">100%</div>
+        <p>de los entrevistados confirmó el problema. Sin excepciones.</p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="vq">
+        <blockquote>"La mayoría de las PyMEs no tienen WMS. Solo tienen sistema administrativo. Hacerles un mini-WMS rústico, básico, visual — está bueno."</blockquote>
+        <cite>Mariela · Experta WMS, 20 años en industria textil</cite>
+      </div>
+      <div class="vq">
+        <blockquote>"Si buscan la solución para empresas más chicas puede haber mucho mercado… porque si no, todo termina en la libreta."</blockquote>
+        <cite>Texcom · 75 años en el sector textil argentino</cite>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 BUYER PERSONAS -->
+<div class="sl" id="s6">
+  <div class="lbl lm">04 — CLIENTES</div>
+  <h2>LAS PERSONAS QUE TEXON TIENE QUE CONVENCER</h2>
+  <div class="pers">
+    <div class="p">
+      <div class="pn">HERNÁN</div><div class="pr">El Dueño · 45–58 años</div>
+      <div class="pd"></div>
+      <blockquote>"Cada vez que entra alguien nuevo al depósito, se pierde toda la memoria del stock."</blockquote>
+      <div><div class="pl">Disposición a pagar</div><div class="pv">USD 30–60/mes si funciona desde el día 1, sin consultor de implementación</div></div>
+    </div>
+    <div class="p">
+      <div class="pn">BELÉN</div><div class="pr">Ventas · 28–38 años</div>
+      <div class="pd"></div>
+      <blockquote>"Antes de cerrar cualquier venta, tengo que llamar al depósito. Siempre."</blockquote>
+      <div><div class="pl">Rol en la adopción</div><div class="pv">Power user clave. Sin su buy-in el sistema no se usa.</div></div>
+    </div>
+    <div class="p">
+      <div class="pn">MATÍAS</div><div class="pr">Depósito · 22–35 años</div>
+      <div class="pd"></div>
+      <blockquote>"Si el sistema me dice dónde está, lo busco. Si tengo que adivinar, tardo el doble."</blockquote>
+      <div><div class="pl">Restricción crítica</div><div class="pv">Alta rotación. El sistema tiene que aprenderse en un día.</div></div>
+    </div>
+  </div>
+  <div class="foot">Early adopters: PyMEs textiles CABA/GBA con tintorería externa · Primer cliente piloto: Muter Textil S.R.L.</div>
+</div>
+
+<!-- S7 MERCADO -->
+<div class="sl" id="s7">
+  <div class="lbl ly">05 — MERCADO</div>
+  <h2>MERCADO Y COMPETIDORES</h2>
+  <div class="body">
+    <div class="tams">
+      <div class="tr t1" style="--i:0"><span class="tl">TAM</span><div><div class="tv">~4.000</div><div class="td">PyMEs textiles en Argentina · USD 2.2M/año</div></div></div>
+      <div class="tr t2" style="--i:1"><span class="tl">SAM</span><div><div class="tv">1.200</div><div class="td">Con tintorería externa · USD 648K/año</div></div></div>
+      <div class="tr t3" style="--i:2"><span class="tl">SOM</span><div><div class="tv">150</div><div class="td">CABA/GBA · Año 1 · USD 36–81K/año</div></div></div>
+    </div>
+    <div class="table">
+      <div class="thead"><span>Solución</span><span>Precio</span><span>Para PyME textil</span></div>
+      <div class="trow"><span>SAP / SAP B1</span><span>USD 50.000+</span><span><span class="xx">✗</span> Demasiado caro y complejo</span></div>
+      <div class="trow"><span>Odoo</span><span>Gratis + impl. cara</span><span><span class="xx">✗</span> Genérico, curva alta</span></div>
+      <div class="trow"><span>Ches</span><span>~USD 200–400/mes</span><span><span class="ww">⚠</span> Costo elevado para el segmento</span></div>
+      <div class="trow"><span>Excel</span><span>Gratis</span><span><span class="xx">✗</span> Sin trazabilidad ni estados</span></div>
+      <div class="trow star"><span>TEXON</span><span>USD 30–60/mes</span><span><span class="cc">✔</span> Diseñado para este flujo exacto</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 MODELO NEGOCIOS -->
+<div class="sl" id="s8">
+  <div class="lbl lw">06 — NEGOCIO</div>
+  <h2>MODELO DE NEGOCIOS</h2>
+  <div class="biz">
+    <div class="bc y"><h4>SEGMENTOS</h4><p>PyMEs textiles 10–100 empleados · tintorería externa · CABA/GBA · sin WMS actual</p></div>
+    <div class="bc y"><h4>PROPUESTA DE VALOR</h4><p>Visibilidad real del stock + herramienta que el operario usa + cero fricción en la implementación</p></div>
+    <div class="bc dk"><h4>CANALES</h4><p>Demo in situ · Referidos entre dueños · APYMEL · SEO textil argentino</p></div>
+    <div class="bc dk"><h4>FUENTES DE INGRESO</h4><p>SaaS mensual USD 30–90/mes · Setup fee USD 150–250 · Módulos premium</p></div>
+    <div class="bc dk"><h4>RECURSOS CLAVE</h4><p>Supabase · PWA operario · Sheets API · Claude API · Know-how textil de campo</p></div>
+    <div class="bc dk"><h4>ESTRUCTURA DE COSTOS</h4><p>Desarrollo (principal) · Hosting free tiers · API IA ~$0.03/planilla · Soporte</p></div>
+  </div>
+</div>
+
+<!-- S9 PRICING -->
+<div class="sl" id="s9">
+  <div class="lbl lm">07 — PRICING</div>
+  <h2>FUENTES DE INGRESO</h2>
+  <div class="plans">
+    <div class="plan base">
+      <div class="pname">PLAN BASE</div>
+      <div class="price">USD 30<sub>/mes</sub></div>
+      <div class="div"></div>
+      <ul><li>Hasta 3 usuarios</li><li>Stock en tiempo real (QR)</li><li>PWA del operario</li><li>Google Sheets para ventas</li><li>Hasta 500 rollos activos</li></ul>
+    </div>
+    <div class="plan pro">
+      <div class="badge">MÁS POPULAR</div>
+      <div class="pname">PLAN PRO</div>
+      <div class="price">USD 55<sub>/mes</sub></div>
+      <div class="div"></div>
+      <ul><li>Usuarios ilimitados</li><li>Valorización de inventario</li><li>IA para planillas de tintorería</li><li>Alertas de reserva vencida</li><li>Rollos ilimitados</li></ul>
+    </div>
+    <div class="plan ent">
+      <div class="pname">PLAN EMPRESA</div>
+      <div class="price">USD 90<sub>/mes</sub></div>
+      <div class="div"></div>
+      <ul><li>Todo Plan Pro</li><li>Múltiples depósitos</li><li>Integración Tango/Bejerman</li><li>Soporte prioritario por WhatsApp</li><li>Reportes exportables</li></ul>
+    </div>
+  </div>
+  <div class="foot">+ Setup fee único: USD 150–250 · ARR proyectado Año 1: ~USD 18.000</div>
+</div>
+
+<!-- S10 DEMANDA -->
+<div class="sl" id="s10">
+  <div class="lbl lw">08 — DEMANDA</div>
+  <h2>ESTIMACIÓN DE DEMANDA</h2>
+  <div class="body">
+    <div class="ns">
+      <div class="nc n1" style="--i:0"><div class="nl">TAM</div><div class="nv">~4.000</div><div class="nd">PyMEs textiles · USD 2.2M/año</div></div>
+      <div class="nc n2" style="--i:1"><div class="nl">SAM</div><div class="nv">1.200</div><div class="nd">Con tintorería externa · USD 648K/año</div></div>
+      <div class="nc n3" style="--i:2"><div class="nl">SOM AÑO 1</div><div class="nv">150</div><div class="nd">CABA/GBA · acceso directo</div></div>
+    </div>
+    <div class="chart">
+      <div class="ct">PROYECCIÓN MRR — AÑO 1 (USD)</div>
+      <div class="bars">
+        <div class="bc2"><div class="bv">$135</div><div class="bt" style="height:220px"><div class="bf" style="height:15px;--d:.1s"></div></div><div class="bl">Q1 · 3 clientes</div></div>
+        <div class="bc2"><div class="bv">$495</div><div class="bt" style="height:220px"><div class="bf" style="height:51px;--d:.22s"></div></div><div class="bl">Q2 · 11 clientes</div></div>
+        <div class="bc2"><div class="bv">$1.170</div><div class="bt" style="height:220px"><div class="bf" style="height:120px;--d:.34s"></div></div><div class="bl">Q3 · 26 clientes</div></div>
+        <div class="bc2"><div class="bv">$2.295</div><div class="bt" style="height:220px"><div class="bf" style="height:220px;--d:.46s"></div></div><div class="bl">Q4 · 51 clientes</div></div>
+      </div>
+      <div class="cf">ARR Año 1 proyectado: ~USD 18.000 · escenario conservador · churn 5% mensual</div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 MVP -->
+<div class="sl" id="s11">
+  <div class="left">
+    <div class="bgn">09</div>
+    <div>
+      <div class="llbl">09 — MVP</div>
+      <h2>MVP —<br>DISEÑO E<br>IMPLEMENTACIÓN</h2>
+    </div>
+    <div class="flow">
+      <div class="fs">PENDIENTE</div>
+      <div class="fs">EN STOCK</div>
+      <div class="fs">RESERVADO</div>
+      <div class="fs">ENTREGADO</div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="mod"><div class="ic">📱</div><h4>APP OPERARIO (PWA)</h4><p>3 pantallas. Escaneo QR. Sin App Store. Funciona offline. Cualquier celular. Se aprende en un día.</p></div>
+    <div class="mod"><div class="ic">📊</div><h4>DASHBOARD DE VENTAS</h4><p>Belén ya lo usa. Google Sheets + Apps Script. Stock en tiempo real. Reserva con un clic.</p></div>
+    <div class="mod"><div class="ic">💹</div><h4>DASHBOARD DEL DUEÑO</h4><p>Stock completo. Valorización en tiempo real. Historial. Alertas. Actualización de costos.</p></div>
+    <div class="mod"><div class="ic">🧠</div><h4>IA PARA PLANILLAS</h4><p>PDF/foto de tintorería → Claude API → rollos pre-cargados automáticamente → operario confirma.</p></div>
+  </div>
+</div>
+
+<!-- S12 CIERRE -->
+<div class="sl" id="s12">
+  <div class="lbl lm">10 — CIERRE</div>
+  <h2>POR QUÉ TEXON TIENE PRODUCT MARKET FIT</h2>
+  <div class="body">
+    <div class="checks">
+      <div class="ck"><div class="cx">✓</div><p>Especialización vertical total. Diseñado para el flujo textil con tintorería, no adaptado de otro rubro.</p></div>
+      <div class="ck"><div class="cx">✓</div><p>Fricción de adopción casi cero. Demo en planta, operativo desde el primer día.</p></div>
+      <div class="ck"><div class="cx">✓</div><p>El operario como aliado. Registrar tiene que ser más fácil que no registrar.</p></div>
+      <div class="ck"><div class="cx">✓</div><p>IA para planillas de tintorería. El cuello de botella que nadie más resuelve.</p></div>
+      <div class="ck"><div class="cx">✓</div><p>Cliente piloto real. Muter Textil · Validación de Mariela y Texcom.</p></div>
+    </div>
+    <div class="right">
+      <div class="bq">
+        <blockquote>"La ventaja de Texon no es tecnológica, es de contexto. Entendemos el flujo, el lenguaje y la cultura de la PyME textil argentina porque lo vivimos en campo."</blockquote>
+        <div class="attr">Tomás Slonimsky · Lisandro Medici · Trinidad Silva Felgueras · Felipe Musa<br>ITBA 2026 · Gestión de Operaciones</div>
+      </div>
+      <div class="pilot">
+        <div class="pd"></div>
+        <p><strong>Piloto activo:</strong> Muter Textil S.R.L. · 24 rollos en seguimiento · Validación en curso</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+/* Cursor con inercia */
+const cur=document.getElementById('cur');
+let mx=window.innerWidth/2,my=window.innerHeight/2,cx=mx,cy=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function loop(){cx+=(mx-cx)*.13;cy+=(my-cy)*.13;
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+  requestAnimationFrame(loop)})();
+
+/* Estado */
+const slides=Array.from(document.querySelectorAll('.sl'));
+const N=slides.length;
+let ci=0,busy=false;
+const prog=document.getElementById('prog');
+const cnEl=document.getElementById('cn');
+const darkSet=new Set(['s2','s5','s8','s10','s11']);
+
+/* Dots */
+const dotsEl=document.getElementById('dots');
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.addEventListener('click',()=>go(i));
+  dotsEl.appendChild(d);
+});
+
+function sync(){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===ci));
+  cnEl.textContent=String(ci+1).padStart(2,'0');
+  prog.style.width=((ci+1)/N*100)+'%';
+  document.body.classList.toggle('inv',darkSet.has(slides[ci].id));
+}
+
+function go(t){
+  if(busy||t===ci||t<0||t>=N)return;
+  busy=true;
+  const dir=t>ci?1:-1;
+  const prev=slides[ci],next=slides[t];
+  prev.style.animation=`${dir>0?'outL':'outR'} .5s cubic-bezier(.77,0,.18,1) both`;
+  next.style.visibility='visible';
+  next.style.animation=`${dir>0?'inR':'inL'} .5s cubic-bezier(.77,0,.18,1) both`;
+  next.classList.add('active');
+  setTimeout(()=>{
+    prev.classList.remove('active');prev.style.animation='';prev.style.visibility='';
+    ci=t;sync();busy=false;
+    next.querySelectorAll('.bf').forEach(b=>{
+      b.style.animation='none';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.animation=''}));
+    });
+  },520);
+}
+
+/* Cursor hover */
+document.querySelectorAll('.card,.col,.p,.vi,.vq,.tr,.trow,.bc,.plan,.nc,.ck,.mod,.bq,.pilot,.dot').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('sq'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('sq'));
+});
+document.querySelectorAll('#nav-left button,#nav-right button').forEach(b=>{
+  b.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  b.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+
+/* Navegación */
+document.querySelector('#nav-right button').addEventListener('click',()=>go(ci+1));
+document.querySelector('#nav-left button').addEventListener('click',()=>go(ci-1));
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(ci+1)}
+  if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(ci-1)}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50)go(dx<0?ci+1:ci-1);
+},{passive:true});
+sync();
+</script>
+</body>
+</html>
