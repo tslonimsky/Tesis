@@ -587,68 +587,54 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
    S12  CIERRE
 ════════════════════════════════════════ */
 #s12{background:var(--w)}
-#s12::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--y);z-index:1}
-#s12 h2{color:var(--bk)}
-#s12 .body{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--gap);flex:1;min-height:0}
-#s12 .checks{display:flex;flex-direction:column;gap:10px}
-#s12 .ck{display:flex;gap:14px;align-items:flex-start;
-  padding:14px 18px;background:var(--linen);border:1.5px solid var(--blush);border-radius:var(--r);
+#s12::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--sage);z-index:1}
+#s12 h2{color:var(--bk);font-size:clamp(28px,4vw,56px)}
+#s12 .body{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(10px,1.3vw,18px);flex:1;min-height:0}
+#s12 .checks{display:flex;flex-direction:column;gap:clamp(6px,.8vw,10px)}
+#s12 .ck{display:flex;gap:clamp(10px,1.2vw,14px);align-items:flex-start;
+  padding:clamp(10px,1.2vw,14px) clamp(12px,1.4vw,18px);
+  background:var(--linen);border:1.5px solid var(--blush);border-radius:var(--r);
   cursor:pointer;transition:border-color .28s,transform .28s}
-#s12 .ck:hover{border-color:var(--sage);transform:translateX(5px)}
-#s12 .ck .cx{width:26px;height:26px;border-radius:2px;background:var(--sage);
+#s12 .ck:hover{border-color:var(--sage);transform:translateX(4px)}
+#s12 .ck .cx{width:clamp(20px,2.2vw,26px);height:clamp(20px,2.2vw,26px);
+  border-radius:2px;background:var(--sage);
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;flex-shrink:0;margin-top:1px;font-weight:700;color:var(--w)}
-#s12 .ck p{font-size:18px;color:#3a3028;line-height:1.58}
-#s12 .right{display:flex;flex-direction:column;gap:12px}
+  font-size:clamp(10px,1.1vw,13px);flex-shrink:0;margin-top:1px;font-weight:700;color:var(--w)}
+#s12 .ck p{font-size:clamp(12px,1.2vw,16px);color:#3a3028;line-height:1.45}
+#s12 .right{display:flex;flex-direction:column;gap:clamp(8px,1vw,12px);min-height:0}
 #s12 .bq{background:var(--bk);border-radius:var(--r);
-  padding:32px;flex:1;display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(18px,2.2vw,32px);flex:1;min-height:0;
+  display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;cursor:pointer;transition:transform .28s}
-#s12 .bq:hover{transform:scale(1.02)}
+#s12 .bq:hover{transform:scale(1.015)}
 #s12 .bq::before{content:'"';position:absolute;top:-12px;left:14px;
-  font-family:'Bebas Neue',sans-serif;font-size:150px;
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,10vw,150px);
   color:var(--y);opacity:.08;line-height:1;pointer-events:none}
-#s12 .bq blockquote{font-size:19px;font-weight:500;
-  color:rgba(255,255,255,.88);line-height:1.62;position:relative;z-index:1}
-#s12 .bq .attr{font-size:14px;color:rgba(255,255,255,.35);
-  margin-top:14px;font-style:italic;position:relative;z-index:1}
+#s12 .bq blockquote{font-size:clamp(13px,1.4vw,18px);font-weight:500;
+  color:rgba(255,255,255,.88);line-height:1.58;position:relative;z-index:1}
+#s12 .bq .attr{font-size:clamp(11px,1.1vw,14px);color:rgba(255,255,255,.35);
+  margin-top:10px;font-style:italic;position:relative;z-index:1}
 #s12 .pilot{background:var(--linen);border:1.5px solid var(--sage);border-radius:var(--r);
-  padding:14px 18px;display:flex;align-items:center;gap:13px;
+  padding:clamp(10px,1.2vw,14px) clamp(12px,1.4vw,18px);
+  display:flex;align-items:center;gap:clamp(8px,1vw,13px);
+  flex-shrink:0;
   cursor:pointer;transition:border-color .28s,box-shadow .28s}
-#s12 .pilot:hover{border-color:var(--sage);box-shadow:0 5px 18px rgba(122,158,126,.2)}
-#s12 .pd{width:13px;height:13px;border-radius:50%;background:var(--sage);animation:pls 2s infinite;flex-shrink:0}
-#s12 .pilot p{font-size:17px;color:#3a3028;line-height:1.5}
+#s12 .pilot:hover{box-shadow:0 5px 18px rgba(122,158,126,.2)}
+#s12 .pd{width:11px;height:11px;border-radius:50%;background:var(--sage);animation:pls 2s infinite;flex-shrink:0}
+#s12 .pilot p{font-size:clamp(12px,1.2vw,15px);color:#3a3028;line-height:1.4}
 #s12 .pilot p strong{color:var(--bk)}
 #s12.active .lbl{animation:fd .4s ease .1s both}
 #s12.active h2  {animation:up .65s cubic-bezier(.22,1,.36,1) .18s both}
-#s12.active .ck:nth-child(1){animation:tick .38s ease .26s both}
-#s12.active .ck:nth-child(2){animation:tick .38s ease .34s both}
-#s12.active .ck:nth-child(3){animation:tick .38s ease .42s both}
-#s12.active .ck:nth-child(4){animation:tick .38s ease .50s both}
-#s12.active .ck:nth-child(5){animation:tick .38s ease .58s both}
-#s12.active .bq   {animation:sc .54s ease .30s both}
-#s12.active .pilot{animation:up .48s ease .60s both}
-
-/* ══════════════════════════════════════════════════════
+#s12.active .ck:nth-child(1){animation:tick .38s ease .26s/* ══════════════════════════════════════════════════════
    RESPONSIVE — adapta todo al viewport real
 ══════════════════════════════════════════════════════ */
 
-/* Use viewport units for font scaling */
-:root {
-  --scale: min(1, calc(100vw / 1440));
-}
-
-/* Core slide scaling via transform */
-#deck {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-}
+/* Core slide scaling */
+#deck { position: fixed; inset: 0; overflow: hidden; }
 
 .sl {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
   padding: var(--py) var(--px);
   gap: var(--gap);
   overflow: hidden;
@@ -656,109 +642,29 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
 }
 
 /* Global title scale */
-.sl h2 {
-  font-size: clamp(36px, 5vw, 72px);
-  letter-spacing: 2px;
-  line-height: .92;
-}
+.sl h2 { font-size: clamp(32px, 4.5vw, 68px); letter-spacing: 1.5px; line-height: .92; }
 
-/* ── S1 PORTADA ── */
-#s1 .logo { font-size: clamp(80px, 12vw, 180px); }
-#s1 .tagline { font-size: clamp(15px, 1.5vw, 22px); }
+/* S1 */ #s1 .logo { font-size: clamp(80px, 12vw, 180px); } #s1 .tagline { font-size: clamp(15px, 1.5vw, 22px); }
+/* S2 */ #s2 .card p { font-size: clamp(13px, 1.2vw, 18px); } #s2 .card h3 { font-size: clamp(18px, 2vw, 28px); } #s2 .qband p { font-size: clamp(14px, 1.3vw, 18px); }
+/* S4 */ #s4 h2 { font-size: clamp(24px, 2.8vw, 42px); } #s4 .col p { font-size: clamp(13px, 1.2vw, 18px); }
+/* S5 */ #s5 .s5-top h2 { font-size: clamp(36px, 5vw, 72px); } #s5 .s5-n { font-size: clamp(52px, 6.5vw, 96px); } #s5 .s5-nl { font-size: clamp(10px, 1vw, 13px); } #s5 .ssrc .sn { font-size: clamp(10px, 1vw, 14px); } #s5 .ssrc .sr { font-size: clamp(9px, .85vw, 12px); } #s5 .sqcard .qt { font-size: clamp(12px, 1.1vw, 17px); } #s5 .s5-sources { gap: clamp(4px, .6vw, 10px); } #s5 .s5-quotes { gap: clamp(6px, .8vw, 12px); } #s5 .ssrc { padding: clamp(7px, .9vw, 14px) clamp(6px, .8vw, 12px); }
+/* S6 */ #s6 .pn { font-size: clamp(24px, 3vw, 40px); } #s6 .p blockquote { font-size: clamp(13px, 1.2vw, 18px); } #s6 .pv { font-size: clamp(12px, 1.1vw, 16px); }
+/* S8 */ #s8 h2 { font-size: clamp(26px, 3vw, 46px); } #s8 .bc li { font-size: clamp(11px, 1vw, 14px); } #s8 .bc h4 { font-size: clamp(11px, 1.1vw, 15px); } #s8 .bc { padding: clamp(10px, 1.2vw, 14px) clamp(12px, 1.4vw, 18px); } #s8 .pv-strip p { font-size: clamp(12px, 1.1vw, 15px); }
+/* S9 */ #s9 h2 { font-size: clamp(28px, 3.5vw, 50px); } #s9 .price { font-size: clamp(36px, 4vw, 52px); } #s9 li { font-size: clamp(13px, 1.2vw, 17px); }
+/* S10 */ #s10 h2 { font-size: clamp(28px, 3.5vw, 50px); } #s10 .nv { font-size: clamp(60px, 8vw, 110px); } #s10 .nd { font-size: clamp(13px, 1.4vw, 18px); } #s10 .ns-sub { font-size: clamp(11px, 1.1vw, 15px); } #s10 .nc { padding: clamp(20px, 2.5vw, 36px) clamp(18px, 2.2vw, 32px); }
+/* S11 */ #s11 .left h2 { font-size: clamp(36px, 5vw, 68px); } #s11 .mod p { font-size: clamp(12px, 1.2vw, 17px); } #s11 .mod h4 { font-size: clamp(13px, 1.4vw, 20px); } #s11 .mod { padding: clamp(16px, 2vw, 28px) clamp(18px, 2.2vw, 32px); }
+/* S2B */ #s2b h2 { font-size: clamp(28px, 4vw, 56px); } #s2b .qrow .ql { font-size: clamp(12px, 1.2vw, 17px); } #s2b .qrow .qmin, #s2b .qrow .qmax { font-size: clamp(13px, 1.3vw, 18px); } #s2b .qrow .qm { font-size: clamp(10px, .95vw, 14px); } #s2b .qtotal .qmin, #s2b .qtotal .qmax { font-size: clamp(16px, 1.8vw, 26px); } #s2b .qhead span { font-size: clamp(9px, .9vw, 13px); } #s2b .qrow { padding: clamp(8px, 1vw, 16px) clamp(12px, 1.4vw, 22px); } #s2b .qband p { font-size: clamp(12px, 1.2vw, 16px); }
 
-/* ── S2 PROBLEMA ── */
-#s2 .card p { font-size: clamp(13px, 1.2vw, 18px); }
-#s2 .card h3 { font-size: clamp(18px, 2vw, 29px); }
-#s2 .qband p { font-size: clamp(14px, 1.3vw, 19px); }
-
-/* ── S4 PROPUESTA ── */
-#s4 h2 { font-size: clamp(28px, 3.2vw, 46px); }
-#s4 .col p { font-size: clamp(13px, 1.2vw, 18px); }
-
-/* ── S5 VALIDACIÓN ── */
-#s5 .s5-top h2 { font-size: clamp(36px, 5vw, 72px); }
-#s5 .s5-n { font-size: clamp(52px, 6.5vw, 96px); }
-#s5 .s5-nl { font-size: clamp(10px, 1vw, 13px); }
-#s5 .ssrc .sn { font-size: clamp(10px, 1vw, 14px); }
-#s5 .ssrc .sr { font-size: clamp(9px, .85vw, 12px); }
-#s5 .sqcard .qt { font-size: clamp(12px, 1.1vw, 17px); }
-#s5 .s5-sources { gap: clamp(4px, .6vw, 10px); }
-#s5 .s5-quotes { gap: clamp(6px, .8vw, 12px); }
-#s5 .ssrc { padding: clamp(7px, .9vw, 14px) clamp(6px, .8vw, 12px); }
-
-/* ── S6 PERSONAS ── */
-#s6 .pn { font-size: clamp(24px, 3vw, 40px); }
-#s6 .p blockquote { font-size: clamp(13px, 1.2vw, 18px); }
-#s6 .pv { font-size: clamp(12px, 1.1vw, 16px); }
-
-/* ── S7 MERCADO ── */
-#s7 h2 { font-size: clamp(32px, 4vw, 56px); }
-#s7 .tv { font-size: clamp(24px, 2.8vw, 38px); }
-#s7 .td { font-size: clamp(11px, 1vw, 14px); }
-#s7 .trow span { font-size: clamp(11px, 1vw, 14px); }
-#s7 .motive { font-size: clamp(10px, .9vw, 13px); }
-#s7 .thead span { font-size: clamp(9px, .85vw, 12px); }
-#s7 .insight p { font-size: clamp(11px, 1.1vw, 14px); }
-#s7 .ctx-item p { font-size: clamp(10px, .95vw, 13px); }
-#s7 .trow { padding: clamp(6px, .7vw, 9px) clamp(10px, 1.1vw, 16px); }
-#s7 .thead { padding: clamp(6px, .7vw, 9px) clamp(10px, 1.1vw, 16px); }
-#s7 .tr { padding: clamp(8px, .9vw, 12px) clamp(12px, 1.3vw, 18px); }
-
-/* ── S8 BMC ── */
-#s8 h2 { font-size: clamp(28px, 3.5vw, 52px); }
-#s8 .bc li { font-size: clamp(11px, 1vw, 14px); }
-#s8 .bc h4 { font-size: clamp(11px, 1.1vw, 15px); }
-#s8 .bc { padding: clamp(10px, 1.2vw, 14px) clamp(12px, 1.4vw, 18px); }
-#s8 .pv-strip p { font-size: clamp(12px, 1.1vw, 15px); }
-
-/* ── S9 PRICING ── */
-#s9 h2 { font-size: clamp(32px, 4vw, 56px); }
-#s9 .price { font-size: clamp(36px, 4vw, 52px); }
-#s9 li { font-size: clamp(13px, 1.2vw, 17px); }
-
-/* ── S10 DEMANDA ── */
-#s10 h2 { font-size: clamp(32px, 4vw, 56px); }
-#s10 .nv { font-size: clamp(60px, 8vw, 110px); }
-#s10 .nd { font-size: clamp(13px, 1.4vw, 18px); }
-#s10 .ns-sub { font-size: clamp(11px, 1.1vw, 15px); }
-#s10 .nc { padding: clamp(20px, 2.5vw, 36px) clamp(18px, 2.2vw, 32px); }
-
-/* ── S11 MVP ── */
-#s11 .left h2 { font-size: clamp(36px, 5vw, 68px); }
-#s11 .mod p { font-size: clamp(12px, 1.2vw, 17px); }
-#s11 .mod h4 { font-size: clamp(13px, 1.4vw, 20px); }
-#s11 .mod { padding: clamp(16px, 2vw, 28px) clamp(18px, 2.2vw, 32px); }
-
-/* ── S12 CIERRE ── */
-#s12 h2 { font-size: clamp(32px, 4.5vw, 60px); }
-#s12 .ck p { font-size: clamp(13px, 1.3vw, 18px); }
-#s12 .bq blockquote { font-size: clamp(13px, 1.4vw, 19px); }
-#s12 .pilot p { font-size: clamp(12px, 1.2vw, 17px); }
-
-/* ── S2B CUANTIFICACIÓN ── */
-#s2b h2 { font-size: clamp(32px, 4.5vw, 62px); }
-#s2b .qrow .ql { font-size: clamp(13px, 1.3vw, 17px); }
-#s2b .qrow .qmin { font-size: clamp(14px, 1.4vw, 18px); }
-#s2b .qrow .qmax { font-size: clamp(14px, 1.4vw, 18px); }
-#s2b .qrow .qm { font-size: clamp(10px, 1vw, 14px); }
-#s2b .qtotal .qmin { font-size: clamp(18px, 2vw, 28px); }
-#s2b .qtotal .qmax { font-size: clamp(18px, 2vw, 28px); }
-#s2b .qhead span { font-size: clamp(9px, .9vw, 13px); }
-#s2b .qrow { padding: clamp(10px, 1.2vw, 18px) clamp(14px, 1.5vw, 22px); }
-#s2b .qband p { font-size: clamp(13px, 1.3vw, 16px); }
-
-/* ── Global label & chip ── */
+/* Global */
 .lbl { font-size: clamp(9px, .85vw, 12px); }
 .chip { font-size: clamp(9px, .85vw, 12px); }
 
-/* ── Slide padding scales with viewport ── */
 :root {
   --px: clamp(28px, 4.2vw, 60px);
-  --py: clamp(22px, 3vw, 44px);
-  --gap: clamp(10px, 1.2vw, 18px);
+  --py: clamp(20px, 2.8vw, 44px);
+  --gap: clamp(8px, 1.1vw, 18px);
 }
 
-/* S5 override — no padding */
 #s5 { padding: clamp(28px, 4.2vw, 60px) clamp(28px, 4.2vw, 60px) !important; }
 
 
@@ -1083,15 +989,15 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       <div class="tams">
         <div class="tr t1" style="--i:0">
           <span class="tl">TAM</span>
-          <div><div class="tv">4.800</div><div class="td">PyMEs textiles en Argentina · USD 2.6M/año potencial</div></div>
+          <div><div class="tv">5.600</div><div class="td">Empresas en la cadena textil argentina · Fuente: Claves Info. Competitiva</div></div>
         </div>
         <div class="tr t2" style="--i:1">
           <span class="tl">SAM</span>
-          <div><div class="tv">1.200</div><div class="td">Con tintorería externa · USD 648K/año</div></div>
+          <div><div class="tv">~800</div><div class="td">Tejedurías y fabricantes PyME sin sistema de gestión · estimación conservadora</div></div>
         </div>
         <div class="tr t3" style="--i:2">
           <span class="tl">SOM</span>
-          <div><div class="tv">150</div><div class="td">CABA/GBA · Año 1 · USD 180K/año a USD 100/mes</div></div>
+          <div><div class="tv">80</div><div class="td">CABA/GBA · Año 1 · red de contactos + Mariela + APYMEL · USD 96K ARR</div></div>
         </div>
       </div>
       <div class="insight">
@@ -1265,7 +1171,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
       </ul>
     </div>
   </div>
-  <div class="foot">+ Setup fee único: USD 150–250 · Precio de lanzamiento · Módulos adicionales próximamente</div>
+  <div class="foot">+ Setup fee único: USD 150–250 · SOM Año 1: 80 clientes · ARR proyectado USD 96.000</div>
 </div>
 
 <!-- S10 DEMANDA -->
@@ -1275,9 +1181,9 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
   <div class="ns-full">
     <div class="nc n1" style="--i:0">
       <div class="nl">TAM</div>
-      <div class="nv">4.800</div>
-      <div class="nd">PyMEs textiles en Argentina</div>
-      <div class="ns-sub">USD 2.6M/año potencial</div>
+      <div class="nv">5.600</div>
+      <div class="nd">Empresas en la cadena textil argentina</div>
+      <div class="ns-sub">Fuente: Claves Info. Competitiva · 2023</div>
     </div>
     <div class="nc n2" style="--i:1">
       <div class="nl">SAM</div>
@@ -1287,12 +1193,12 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--w);backgroun
     </div>
     <div class="nc n3" style="--i:2">
       <div class="nl">SOM AÑO 1</div>
-      <div class="nv">150</div>
-      <div class="nd">CABA/GBA · acceso directo</div>
-      <div class="ns-sub">USD 180K/año a USD 100/mes</div>
+      <div class="nv">80</div>
+      <div class="nd">CABA/GBA · red directa + Mariela + APYMEL</div>
+      <div class="ns-sub">USD 96.000 ARR · USD 100/mes</div>
     </div>
   </div>
-  <div class="ns-foot">ARR proyectado Año 1: ~USD 18.000 · escenario conservador · churn 5% mensual</div>
+  <div class="ns-foot">ARR proyectado Año 1: ~USD 96.000 · escenario conservador · acceso vía red directa CABA/GBA</div>
 </div>
 
 <!-- S11 MVP -->
